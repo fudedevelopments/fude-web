@@ -259,7 +259,7 @@ export default function Home() {
                 transition={{ duration: 0.5, delay: 0.2 }}
                 className="max-w-2xl mx-auto text-gray-400 text-lg"
               >
-                Check out some of our recent projects and see how we've helped businesses succeed.
+                Check out some of our recent projects and see how we&apos;ve helped businesses succeed.
               </motion.p>
             </div>
           </div>

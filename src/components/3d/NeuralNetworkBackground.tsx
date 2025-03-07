@@ -7,7 +7,9 @@ export default function NeuralNetworkBackground() {
     const containerRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
-        if (!containerRef.current) return;
+        // Store the ref value in a variable to use in cleanup
+        const container = containerRef.current;
+        if (!container) return;
 
         // Scene setup
         const scene = new THREE.Scene();
@@ -25,7 +27,7 @@ export default function NeuralNetworkBackground() {
         const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
         renderer.setSize(window.innerWidth, window.innerHeight);
         renderer.setPixelRatio(window.devicePixelRatio);
-        containerRef.current.appendChild(renderer.domElement);
+        container.appendChild(renderer.domElement);
 
         // Create particles for neural network nodes
         const particlesGeometry = new THREE.BufferGeometry();
@@ -154,8 +156,8 @@ export default function NeuralNetworkBackground() {
             window.removeEventListener('mousemove', handleMouseMove);
             window.removeEventListener('resize', handleResize);
 
-            if (containerRef.current) {
-                containerRef.current.removeChild(renderer.domElement);
+            if (container) {
+                container.removeChild(renderer.domElement);
             }
 
             // Dispose of geometries and materials

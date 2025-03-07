@@ -11,10 +11,12 @@ export default function CustomSpline({ scene }: CustomSplineProps) {
     const canvasRef = useRef<HTMLCanvasElement>(null);
 
     useEffect(() => {
-        if (!canvasRef.current) return;
+        // Store the ref value in a variable to use in cleanup
+        const canvas = canvasRef.current;
+        if (!canvas) return;
 
         // Create a new Spline application
-        const app = new Application(canvasRef.current);
+        const app = new Application(canvas);
 
         // Load the scene
         app.load(scene);

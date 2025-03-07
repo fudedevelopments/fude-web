@@ -23,10 +23,15 @@ export default function NeuralNetwork({
     const containerRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
-        if (!containerRef.current) return;
+        // Store the ref value in a variable to use in cleanup
+        const container = containerRef.current;
+        if (!container) return;
 
         // Scene setup
         const scene = new THREE.Scene();
+        scene.background = new THREE.Color(0x000000);
+        scene.background.set(0x000000);
+        scene.background.convertSRGBToLinear();
 
         // Camera setup
         const camera = new THREE.PerspectiveCamera(75, width / height, 0.1, 1000);
@@ -35,32 +40,16 @@ export default function NeuralNetwork({
         // Renderer setup
         const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
         renderer.setSize(width, height);
-        renderer.setPixelRatio(window.devicePixelRatio);
-        containerRef.current.appendChild(renderer.domElement);
+        renderer.setClearColor(0x000000, 0);
+        container.appendChild(renderer.domElement);
 
-        // Create neural network
+        // Create neural network group
         const networkGroup = new THREE.Group();
+        scene.add(networkGroup);
 
-        // Calculate spacing
-        const layerSpacing = 4;
-        const nodeSpacing = 1.5;
-        const totalWidth = (layers.length - 1) * layerSpacing;
-        const startX = -totalWidth / 2;
-
-        // Create nodes and connections
-        const nodes: THREE.Mesh[] = [];
-        const connections: THREE.Line[] = [];
-        const activations: number[] = [];
-
-        // Node geometry and material
+        // Node geometry and materials
         const nodeGeometry = new THREE.SphereGeometry(0.3, 16, 16);
-        const nodeMaterial = new THREE.MeshPhongMaterial({
-            color: new THREE.Color(color),
-            emissive: new THREE.Color(color),
-            emissiveIntensity: 0.5,
-            specular: new THREE.Color(0xffffff),
-            shininess: 100
-        });
+        const nodeMaterial = new THREE.MeshBasicMaterial({ color: new THREE.Color(color) });
 
         // Connection material
         const connectionMaterial = new THREE.LineBasicMaterial({
@@ -69,79 +58,98 @@ export default function NeuralNetwork({
             opacity: connectionOpacity
         });
 
+        // Create nodes and store their positions
+        const nodes: THREE.Mesh[] = [];
+        const nodePositions: THREE.Vector3[] = [];
+
+        // Calculate spacing
+        const layerSpacing = 20 / (layers.length - 1);
+        const maxNodesInLayer = Math.max(...layers);
+        const verticalSpacing = 10 / maxNodesInLayer;
+
         // Create nodes for each layer
         layers.forEach((nodeCount, layerIndex) => {
-            const x = startX + layerIndex * layerSpacing;
-            const layerHeight = (nodeCount - 1) * nodeSpacing;
-            const startY = layerHeight / 2;
+            const xPos = layerIndex * layerSpacing - 10;
 
             for (let i = 0; i < nodeCount; i++) {
-                const y = startY - i * nodeSpacing;
+                const yPos = (i - (nodeCount - 1) / 2) * verticalSpacing;
 
-                // Create node
                 const node = new THREE.Mesh(nodeGeometry, nodeMaterial.clone());
-                node.position.set(x, y, 0);
+                node.position.set(xPos, yPos, 0);
                 networkGroup.add(node);
                 nodes.push(node);
+                nodePositions.push(new THREE.Vector3(xPos, yPos, 0));
 
-                // Initialize activation value
-                activations.push(Math.random());
-
-                // Create connections to previous layer
-                if (layerIndex > 0) {
-                    const prevLayerSize = layers[layerIndex - 1];
-                    const prevLayerStartIndex = layers.slice(0, layerIndex - 1).reduce((sum, size) => sum + size, 0);
-
-                    for (let j = 0; j < prevLayerSize; j++) {
-                        const prevNodeIndex = prevLayerStartIndex + j;
-                        const prevNode = nodes[prevNodeIndex];
-
-                        // Create connection line
-                        const points = [
-                            new THREE.Vector3(prevNode.position.x, prevNode.position.y, prevNode.position.z),
-                            new THREE.Vector3(x, y, 0)
-                        ];
-
-                        const connectionGeometry = new THREE.BufferGeometry().setFromPoints(points);
-                        const connection = new THREE.Line(connectionGeometry, connectionMaterial.clone());
-                        networkGroup.add(connection);
-                        connections.push(connection);
-                    }
+                // Add pulse animation to some nodes
+                if (Math.random() > 0.7) {
+                    const pulseMaterial = node.material as THREE.MeshBasicMaterial;
+                    node.userData.pulseDirection = 1;
+                    node.userData.pulseValue = 1;
+                    node.userData.pulseSpeed = 0.01 * pulseSpeed * (0.5 + Math.random());
                 }
             }
         });
 
-        scene.add(networkGroup);
+        // Create connections between layers
+        for (let layerIndex = 0; layerIndex < layers.length - 1; layerIndex++) {
+            const currentLayerSize = layers[layerIndex];
+            const nextLayerSize = layers[layerIndex + 1];
 
-        // Lighting
-        const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
-        scene.add(ambientLight);
+            let currentLayerStartIndex = 0;
+            for (let i = 0; i < layerIndex; i++) {
+                currentLayerStartIndex += layers[i];
+            }
 
-        const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
-        directionalLight.position.set(5, 5, 5);
-        scene.add(directionalLight);
+            const nextLayerStartIndex = currentLayerStartIndex + currentLayerSize;
+
+            // Connect each node in current layer to each node in next layer
+            for (let i = 0; i < currentLayerSize; i++) {
+                const fromNodeIndex = currentLayerStartIndex + i;
+
+                for (let j = 0; j < nextLayerSize; j++) {
+                    const toNodeIndex = nextLayerStartIndex + j;
+
+                    const points = [
+                        nodePositions[fromNodeIndex],
+                        nodePositions[toNodeIndex]
+                    ];
+
+                    const geometry = new THREE.BufferGeometry().setFromPoints(points);
+                    const line = new THREE.Line(geometry, connectionMaterial);
+                    networkGroup.add(line);
+                }
+            }
+        }
 
         // Animation
-        let time = 0;
-
         function animate() {
             requestAnimationFrame(animate);
 
-            time += 0.01 * pulseSpeed;
+            // Pulse animation for nodes
+            nodes.forEach(node => {
+                if (node.userData.pulseDirection !== undefined) {
+                    const material = node.material as THREE.MeshBasicMaterial;
 
-            // Animate node activations
-            nodes.forEach((node, index) => {
-                const activation = (Math.sin(time + activations[index] * 10) + 1) / 2;
-                (node.material as THREE.MeshPhongMaterial).emissiveIntensity = activation * 0.8;
-                node.scale.set(
-                    1 + activation * 0.2,
-                    1 + activation * 0.2,
-                    1 + activation * 0.2
-                );
+                    // Update pulse value
+                    node.userData.pulseValue += node.userData.pulseDirection * node.userData.pulseSpeed;
+
+                    // Reverse direction at limits
+                    if (node.userData.pulseValue > 1.5) {
+                        node.userData.pulseDirection = -1;
+                    } else if (node.userData.pulseValue < 0.5) {
+                        node.userData.pulseDirection = 1;
+                    }
+
+                    // Apply pulse to node scale and opacity
+                    node.scale.set(
+                        node.userData.pulseValue,
+                        node.userData.pulseValue,
+                        node.userData.pulseValue
+                    );
+
+                    material.opacity = node.userData.pulseValue * 0.7;
+                }
             });
-
-            // Rotate slightly
-            networkGroup.rotation.y = Math.sin(time * 0.2) * 0.2;
 
             renderer.render(scene, camera);
         }
@@ -159,8 +167,8 @@ export default function NeuralNetwork({
         return () => {
             window.removeEventListener('resize', handleResize);
 
-            if (containerRef.current) {
-                containerRef.current.removeChild(renderer.domElement);
+            if (container) {
+                container.removeChild(renderer.domElement);
             }
 
             scene.remove(networkGroup);
@@ -170,20 +178,15 @@ export default function NeuralNetwork({
                 (node.material as THREE.Material).dispose();
             });
 
-            connections.forEach(connection => {
-                connection.geometry.dispose();
-                (connection.material as THREE.Material).dispose();
+            // Dispose of all line geometries
+            networkGroup.children.forEach(child => {
+                if (child instanceof THREE.Line) {
+                    child.geometry.dispose();
+                    (child.material as THREE.Material).dispose();
+                }
             });
-
-            renderer.dispose();
         };
     }, [width, height, layers, color, pulseSpeed, connectionOpacity]);
 
-    return (
-        <div
-            ref={containerRef}
-            className={`w-[${width}px] h-[${height}px] relative`}
-            style={{ width, height }}
-        />
-    );
+    return <div ref={containerRef} className="w-full h-full" />;
 } 
