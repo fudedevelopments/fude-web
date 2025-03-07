@@ -89,7 +89,7 @@ export default function AnimatedBackground({
         scene.add(points);
 
         // Create a few larger glowing spheres for visual interest
-        const glowingSpheres = [];
+        const glowingSpheres: THREE.Mesh[] = [];
         const sphereCount = 5;
 
         for (let i = 0; i < sphereCount; i++) {
