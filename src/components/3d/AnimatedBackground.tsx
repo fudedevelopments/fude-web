@@ -43,8 +43,8 @@ export default function AnimatedBackground({
 
         // Create a more interesting 3D background
         const geometry = new THREE.BufferGeometry();
-        const vertices = [];
-        const colors = [];
+        const vertices: number[] = [];
+        const colors: number[] = [];
 
         // Create a color gradient
         const color1Obj = new THREE.Color(color1);

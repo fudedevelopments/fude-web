@@ -31,11 +31,12 @@ export default function AnimatedChatbot() {
         // Simulate bot response
         setTimeout(() => {
             const botResponses = [
-                "That's a great question! Our AI solutions can help with that.",
-                "I'd be happy to tell you more about our services!",
-                "Our team specializes in exactly that kind of technology.",
-                "That's one of our core strengths at Fude Development!",
-                "Let me connect you with one of our experts to discuss that further."
+                "I can help you with AI-powered solutions for your business!",
+                "Our team specializes in creating custom AI applications.",
+                "That&apos;s a great question! Our AI solutions can help with that.",
+                "We have experience in machine learning, natural language processing, and computer vision.",
+                "That&apos;s one of our core strengths at Fude Development!",
+                "Would you like to schedule a consultation with our team?"
             ];
 
             const randomResponse = botResponses[Math.floor(Math.random() * botResponses.length)];
@@ -88,8 +89,8 @@ export default function AnimatedChatbot() {
                                             >
                                                 <div
                                                     className={`max-w-[80%] p-3 rounded-lg ${msg.sender === 'user'
-                                                            ? 'bg-indigo-600 text-white'
-                                                            : 'bg-gray-700 text-gray-200'
+                                                        ? 'bg-indigo-600 text-white'
+                                                        : 'bg-gray-700 text-gray-200'
                                                         }`}
                                                 >
                                                     {msg.text}

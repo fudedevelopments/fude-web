@@ -2,10 +2,13 @@
 
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import Typewriter from 'typewriter-effect';
+import dynamic from 'next/dynamic';
 import Scene from '../3d/Scene';
 import HeroModel from '../3d/HeroModel';
 import ClientOnly from '../3d/ClientOnly';
+
+// Import our custom typewriter component
+const CustomTypewriter = dynamic(() => import('@/components/ui/CustomTypewriter'), { ssr: false });
 
 export default function Hero() {
     const [isHovered, setIsHovered] = useState(false);
@@ -46,16 +49,16 @@ export default function Hero() {
                         transition={{ duration: 0.8, delay: 0.4 }}
                         className="text-xl md:text-2xl text-gray-300 mb-8"
                     >
-                        <Typewriter
-                            options={{
-                                strings: [
-                                    'We develop AI-driven websites',
-                                    'We create Android apps',
-                                    'We build smart automation solutions'
-                                ],
-                                autoStart: true,
-                                loop: true,
-                            }}
+                        <CustomTypewriter
+                            strings={[
+                                'We develop AI-driven websites',
+                                'We create Android apps',
+                                'We build smart automation solutions'
+                            ]}
+                            loop={true}
+                            typeSpeed={80}
+                            deleteSpeed={50}
+                            delayBetweenStrings={1500}
                         />
                     </motion.div>
 
