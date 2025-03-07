@@ -35,7 +35,7 @@ const milestones = [
     {
         year: 2025,
         title: 'Future Vision',
-        description: 'Continuing to push the boundaries of what\'s possible with AI-driven development.',
+        description: 'Continuing to push the boundaries of what&apos;s possible with AI-driven development.',
     },
 ];
 
@@ -139,7 +139,7 @@ export default function About() {
                 >
                     <h3 className="text-2xl font-bold text-white mb-6">Our Vision</h3>
                     <p className="text-gray-400 text-lg leading-relaxed">
-                        At Fude Development, we believe in harnessing the power of artificial intelligence to create innovative solutions that transform businesses and enhance user experiences. Our team of passionate developers, designers, and AI specialists work together to push the boundaries of what's possible in the digital world.
+                        At Fude Development, we believe in harnessing the power of artificial intelligence to create innovative solutions that transform businesses and enhance user experiences. Our team of passionate developers, designers, and AI specialists work together to push the boundaries of what&apos;s possible in the digital world.
                     </p>
                 </motion.div>
             </div>

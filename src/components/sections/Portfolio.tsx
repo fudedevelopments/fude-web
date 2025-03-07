@@ -96,7 +96,7 @@ export default function Portfolio() {
                         transition={{ duration: 0.5, delay: 0.2 }}
                         className="max-w-2xl mx-auto text-gray-400 text-lg"
                     >
-                        Explore our latest projects and see how we've helped businesses transform with AI-powered technology.
+                        Explore our latest projects and see how we&apos;ve helped businesses transform with AI-powered technology.
                     </motion.p>
                 </div>
 

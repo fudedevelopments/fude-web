@@ -35,7 +35,7 @@ const teamMembers = [
     {
         name: 'Dinesh Kumar V S',
         role: 'Android Development Lead',
-        bio: 'Dinesh brings extensive experience in native and cross-platform mobile development, creating seamless and intuitive mobile experiences.',
+        bio: 'Marcus brings extensive experience in native and cross-platform mobile development, creating seamless and intuitive mobile experiences.',
         image: 'https://images.tanzo.in/assets/dinesh',
         socialLinks: {
             twitter: 'https://twitter.com',
@@ -110,7 +110,7 @@ export default function Team() {
                 >
                     <h3 className="text-2xl font-bold text-white mb-4">Join Our Team</h3>
                     <p className="text-gray-400 max-w-2xl mx-auto mb-8">
-                        We're always looking for talented individuals to join our team. If you're passionate about AI and technology, we'd love to hear from you.
+                        We&apos;re always looking for talented individuals to join our team. If you&apos;re passionate about AI and technology, we&apos;d love to hear from you.
                     </p>
                     <motion.button
                         whileHover={{ scale: 1.05 }}

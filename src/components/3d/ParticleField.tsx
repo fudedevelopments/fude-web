@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useMemo, useEffect } from 'react';
+import { useRef, useEffect } from 'react';
 import * as THREE from 'three';
 
 interface ParticleFieldProps {
@@ -23,32 +23,41 @@ export default function ParticleField({
     const containerRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
-        if (!containerRef.current) return;
+        // Store the ref value in a variable to use in cleanup
+        const container = containerRef.current;
+        if (!container) return;
 
         // Scene setup
         const scene = new THREE.Scene();
 
         // Camera setup
-        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const camera = new THREE.PerspectiveCamera(
+            75,
+            window.innerWidth / window.innerHeight,
+            0.1,
+            1000
+        );
         camera.position.z = 50;
 
         // Renderer setup
         const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
         renderer.setSize(window.innerWidth, window.innerHeight);
         renderer.setPixelRatio(window.devicePixelRatio);
-        containerRef.current.appendChild(renderer.domElement);
+        container.appendChild(renderer.domElement);
 
-        // Particles
+        // Create particles
         const particlesGeometry = new THREE.BufferGeometry();
-        const particlesCnt = count;
-        const posArray = new Float32Array(particlesCnt * 3);
-        const velocityArray = new Float32Array(particlesCnt * 3);
+        const particlesCount = count;
 
-        for (let i = 0; i < particlesCnt * 3; i++) {
+        const posArray = new Float32Array(particlesCount * 3);
+        const velocityArray = new Float32Array(particlesCount * 3);
+
+        for (let i = 0; i < particlesCount * 3; i++) {
             // Position
             posArray[i] = (Math.random() - 0.5) * 100;
+
             // Velocity
-            velocityArray[i] = (Math.random() - 0.5) * speed;
+            velocityArray[i] = (Math.random() - 0.5) * 0.2 * speed;
         }
 
         particlesGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
@@ -61,49 +70,62 @@ export default function ParticleField({
             transparent: true,
             opacity: opacity,
             blending: THREE.AdditiveBlending,
+            sizeAttenuation: true
         });
 
-        // Mesh
+        // Create particle system
         const particlesMesh = new THREE.Points(particlesGeometry, particlesMaterial);
         scene.add(particlesMesh);
 
-        // Lines
+        // Lines for connected particles
         let lineMesh: THREE.LineSegments | null = null;
 
         if (showLines) {
+            // Create lines between particles that are close to each other
             const lineGeometry = new THREE.BufferGeometry();
+            const linePositions: number[] = [];
             const lineIndices: number[] = [];
-            const linePositions = new Float32Array(particlesCnt * 3);
 
-            // Copy positions from particles
-            for (let i = 0; i < particlesCnt * 3; i++) {
-                linePositions[i] = posArray[i];
-            }
+            // Find particles that are close to each other
+            const positions = particlesGeometry.attributes.position.array;
+            const maxDistance = 10; // Maximum distance for connection
+            let lineIndex = 0;
 
-            // Create connections between nearby particles
-            for (let i = 0; i < particlesCnt; i++) {
-                for (let j = i + 1; j < particlesCnt; j++) {
+            for (let i = 0; i < particlesCount; i++) {
+                const x1 = positions[i * 3];
+                const y1 = positions[i * 3 + 1];
+                const z1 = positions[i * 3 + 2];
+
+                for (let j = i + 1; j < particlesCount; j++) {
+                    const x2 = positions[j * 3];
+                    const y2 = positions[j * 3 + 1];
+                    const z2 = positions[j * 3 + 2];
+
                     const distance = Math.sqrt(
-                        Math.pow(posArray[i * 3] - posArray[j * 3], 2) +
-                        Math.pow(posArray[i * 3 + 1] - posArray[j * 3 + 1], 2) +
-                        Math.pow(posArray[i * 3 + 2] - posArray[j * 3 + 2], 2)
+                        Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2) + Math.pow(z2 - z1, 2)
                     );
 
-                    if (distance < 10) {
-                        lineIndices.push(i, j);
+                    if (distance < maxDistance) {
+                        linePositions.push(x1, y1, z1, x2, y2, z2);
+                        lineIndices.push(lineIndex, lineIndex + 1);
+                        lineIndex += 2;
                     }
                 }
             }
 
+            // Create line geometry
+            lineGeometry.setAttribute('position', new THREE.Float32BufferAttribute(linePositions, 3));
             lineGeometry.setIndex(lineIndices);
-            lineGeometry.setAttribute('position', new THREE.BufferAttribute(linePositions, 3));
 
+            // Line material
             const lineMaterial = new THREE.LineBasicMaterial({
                 color: new THREE.Color(color),
                 transparent: true,
-                opacity: opacity * 0.5,
+                opacity: opacity * 0.3,
+                blending: THREE.AdditiveBlending
             });
 
+            // Create line mesh
             lineMesh = new THREE.LineSegments(lineGeometry, lineMaterial);
             scene.add(lineMesh);
         }
@@ -122,36 +144,33 @@ export default function ParticleField({
         function animate() {
             requestAnimationFrame(animate);
 
-            // Update particles
-            const positions = particlesGeometry.attributes.position.array as Float32Array;
-            const velocities = particlesGeometry.attributes.velocity.array as Float32Array;
+            // Update particle positions
+            const positions = particlesGeometry.attributes.position.array;
+            const velocities = particlesGeometry.attributes.velocity.array;
 
-            for (let i = 0; i < particlesCnt * 3; i += 3) {
-                // Apply velocity
+            for (let i = 0; i < particlesCount * 3; i += 3) {
+                // Update position based on velocity
                 positions[i] += velocities[i];
                 positions[i + 1] += velocities[i + 1];
                 positions[i + 2] += velocities[i + 2];
 
-                // Boundary check
-                if (Math.abs(positions[i]) > 50) velocities[i] *= -1;
-                if (Math.abs(positions[i + 1]) > 50) velocities[i + 1] *= -1;
-                if (Math.abs(positions[i + 2]) > 50) velocities[i + 2] *= -1;
+                // Boundary check - wrap around if out of bounds
+                if (Math.abs(positions[i]) > 50) {
+                    positions[i] = -positions[i] * 0.9;
+                }
+                if (Math.abs(positions[i + 1]) > 50) {
+                    positions[i + 1] = -positions[i + 1] * 0.9;
+                }
+                if (Math.abs(positions[i + 2]) > 50) {
+                    positions[i + 2] = -positions[i + 2] * 0.9;
+                }
             }
 
             particlesGeometry.attributes.position.needsUpdate = true;
 
-            // Update lines if they exist
-            if (lineMesh) {
-                const linePositions = lineMesh.geometry.attributes.position.array as Float32Array;
-                for (let i = 0; i < particlesCnt * 3; i++) {
-                    linePositions[i] = positions[i];
-                }
-                lineMesh.geometry.attributes.position.needsUpdate = true;
-            }
-
             // Rotate based on mouse position
-            particlesMesh.rotation.x += mouse.y * 0.001;
-            particlesMesh.rotation.y += mouse.x * 0.001;
+            particlesMesh.rotation.x += mouse.y * 0.01;
+            particlesMesh.rotation.y += mouse.x * 0.01;
 
             if (lineMesh) {
                 lineMesh.rotation.x = particlesMesh.rotation.x;
@@ -177,8 +196,8 @@ export default function ParticleField({
             window.removeEventListener('mousemove', onMouseMove);
             window.removeEventListener('resize', handleResize);
 
-            if (containerRef.current) {
-                containerRef.current.removeChild(renderer.domElement);
+            if (container) {
+                container.removeChild(renderer.domElement);
             }
 
             scene.remove(particlesMesh);
@@ -195,5 +214,5 @@ export default function ParticleField({
         };
     }, [count, size, color, speed, opacity, showLines]);
 
-    return <div ref={containerRef} className="absolute inset-0 z-10" />;
+    return <div ref={containerRef} className="w-full h-full" />;
 } 

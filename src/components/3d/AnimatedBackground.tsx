@@ -20,7 +20,9 @@ export default function AnimatedBackground({
     const containerRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
-        if (!containerRef.current) return;
+        // Store the ref value in a variable to use in cleanup
+        const container = containerRef.current;
+        if (!container) return;
 
         // Scene setup with lower resource usage
         const scene = new THREE.Scene();
@@ -37,7 +39,7 @@ export default function AnimatedBackground({
         });
         renderer.setSize(window.innerWidth, window.innerHeight);
         renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2)); // Limit pixel ratio for performance
-        containerRef.current.appendChild(renderer.domElement);
+        container.appendChild(renderer.domElement);
 
         // Create a more interesting 3D background
         const geometry = new THREE.BufferGeometry();
@@ -183,8 +185,8 @@ export default function AnimatedBackground({
 
         // Cleanup
         return () => {
-            if (containerRef.current) {
-                containerRef.current.removeChild(renderer.domElement);
+            if (container) {
+                container.removeChild(renderer.domElement);
             }
 
             window.removeEventListener('mousemove', onMouseMove);

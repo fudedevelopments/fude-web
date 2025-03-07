@@ -75,7 +75,7 @@ export default function Contact() {
                         transition={{ duration: 0.5, delay: 0.2 }}
                         className="max-w-2xl mx-auto text-gray-400 text-lg"
                     >
-                        Have a project in mind? Let's discuss how we can help bring your ideas to life with AI-powered technology.
+                        Have a project in mind? Let&apos;s discuss how we can help bring your ideas to life with AI-powered technology.
                     </motion.p>
                 </div>
 
