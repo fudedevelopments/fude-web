@@ -35,7 +35,7 @@ const teamMembers = [
     {
         name: 'Dinesh Kumar V S',
         role: 'Android Development Lead',
-        bio: 'Marcus brings extensive experience in native and cross-platform mobile development, creating seamless and intuitive mobile experiences.',
+        bio: 'dinesh brings extensive experience in native and cross-platform mobile development, creating seamless and intuitive mobile experiences.',
         image: 'https://images.tanzo.in/assets/dinesh',
         socialLinks: {
             twitter: 'https://twitter.com',
