@@ -7,7 +7,7 @@ import {
   useEffect,
   ReactNode,
 } from 'react'
-import { usePathname, useSearchParams } from 'next/navigation'
+import { usePathname } from 'next/navigation'
 import LoadingFallback from '@/components/ui/LoadingFallback'
 
 interface NavigationContextType {
@@ -35,20 +35,16 @@ interface NavigationProviderProps {
 export function NavigationProvider({ children }: NavigationProviderProps) {
   const [isLoading, setIsLoading] = useState(false)
   const pathname = usePathname()
-  const searchParams = useSearchParams()
 
   useEffect(() => {
-    // Stop loading immediately when pathname or searchParams change
-    console.log('Route changed to:', pathname)
+    // Stop loading immediately when pathname changes
     setIsLoading(false)
-  }, [pathname, searchParams])
+  }, [pathname])
 
   useEffect(() => {
     // Failsafe: automatically stop loading after 5 seconds
     if (isLoading) {
-      console.log('Loading started, setting 5s timeout')
       const timeout = setTimeout(() => {
-        console.log('Loading timeout reached, stopping loading')
         setIsLoading(false)
       }, 5000)
 
@@ -56,14 +52,8 @@ export function NavigationProvider({ children }: NavigationProviderProps) {
     }
   }, [isLoading])
 
-  const startLoading = () => {
-    console.log('startLoading called')
-    setIsLoading(true)
-  }
-  const stopLoading = () => {
-    console.log('stopLoading called')
-    setIsLoading(false)
-  }
+  const startLoading = () => setIsLoading(true)
+  const stopLoading = () => setIsLoading(false)
 
   return (
     <NavigationContext.Provider

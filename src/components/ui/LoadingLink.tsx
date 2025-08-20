@@ -39,14 +39,7 @@ export default function LoadingLink({
       const linkPath = href.split('#')[0] // Remove hash
 
       if (linkPath !== currentPath && linkPath !== '') {
-        console.log('Starting loading for navigation to:', linkPath)
         startLoading()
-
-        // Fallback: stop loading after 3 seconds if navigation doesn't complete
-        setTimeout(() => {
-          console.log('Fallback: stopping loading after timeout')
-          // Note: The NavigationProvider should handle this, but this is a backup
-        }, 3000)
       }
     }
 
