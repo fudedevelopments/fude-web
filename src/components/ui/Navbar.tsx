@@ -42,7 +42,7 @@ export default function Navbar() {
           <div className='flex items-center'>
             <Link href='/' className='flex-shrink-0'>
               <Image
-                src='/fude-logo.svg'
+                src='/images/logo/fude-logo.svg'
                 alt='Fude Development Logo'
                 width={40}
                 height={40}
