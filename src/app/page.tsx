@@ -282,30 +282,6 @@ export default function Home() {
               </div>
             </div>
           </div>
-
-          {/* Scroll indicator */}
-          <motion.div
-            className='absolute bottom-6 left-1/2 transform -translate-x-1/2'
-            animate={{ y: [0, 12, 0] }}
-            transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
-          >
-            <div className='flex flex-col items-center space-y-2'>
-              <div className='w-6 h-10 border-2 border-gray-400/60 rounded-full flex justify-center relative'>
-                <motion.div
-                  className='w-1 h-3 bg-gradient-to-b from-indigo-400 to-purple-400 rounded-full mt-2'
-                  animate={{ y: [0, 16, 0], opacity: [1, 0, 1] }}
-                  transition={{
-                    duration: 2,
-                    repeat: Infinity,
-                    ease: 'easeInOut',
-                  }}
-                />
-              </div>
-              <span className='text-xs text-gray-500 font-medium'>
-                Scroll Down
-              </span>
-            </div>
-          </motion.div>
         </section>
 
         {/* About Company Section */}
