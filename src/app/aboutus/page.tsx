@@ -103,7 +103,7 @@ const teamMembers = [
     socialLinks: {
       linkedin:
         'https://www.linkedin.com/in/dinesh-kumar-v-s-37236a30b?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app',
-      github: 'https://github.com/dineshkumarvs',
+      github: 'https://github.com/Dineshkumarvss',
     },
   },
 ]
