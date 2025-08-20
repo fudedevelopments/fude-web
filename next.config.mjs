@@ -16,8 +16,6 @@ const nextConfig = {
   experimental: {
     optimizePackageImports: ['lucide-react', 'framer-motion'],
   },
-  // Enable SWC minification for better performance
-  swcMinify: true,
   // Optimize compilation
   compiler: {
     removeConsole: process.env.NODE_ENV === 'production',

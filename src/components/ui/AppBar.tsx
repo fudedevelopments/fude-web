@@ -6,6 +6,8 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { useRouter, usePathname } from 'next/navigation'
 import { Home, Zap, Users, Briefcase, Mail, Brain, Menu, X } from 'lucide-react'
+import LoadingLink from './LoadingLink'
+import { useNavigation } from '@/providers/NavigationProvider'
 
 const sections = [
   { id: 'home', label: 'Home', Icon: Home, href: '/' },
@@ -20,6 +22,7 @@ export default function AppBar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const router = useRouter()
   const pathname = usePathname()
+  const { startLoading } = useNavigation()
 
   useEffect(() => {
     // Set active section based on current pathname
@@ -80,20 +83,24 @@ export default function AppBar() {
 
   const handleSectionClick = (sectionId: string, href: string) => {
     if (href.startsWith('/')) {
-      // Navigate to different page with optimized transition
+      // Check if it's a different page
+      const currentPath = pathname
+      const linkPath = href.split('#')[0] // Remove hash
+
+      if (linkPath !== currentPath) {
+        // Show loading for different page navigation
+        startLoading()
+      }
+
+      // Navigate to different page
+      router.push(href)
       setActiveSection(sectionId)
       setMobileMenuOpen(false)
-      // Use startTransition for non-blocking updates
-      router.push(href)
     } else {
       // Scroll to section on current page
-      const element = document.getElementById(sectionId)
-      if (element) {
-        element.scrollIntoView({
-          behavior: 'smooth',
-          block: 'start',
-        })
-      }
+      document.getElementById(sectionId)?.scrollIntoView({
+        behavior: 'smooth',
+      })
       setActiveSection(sectionId)
       setMobileMenuOpen(false)
     }
@@ -124,7 +131,7 @@ export default function AppBar() {
         <div className='container mx-auto px-3 sm:px-4 lg:px-8 relative'>
           <div className='flex items-center justify-between h-14 sm:h-16'>
             {/* Logo Section */}
-            <Link href='/' className='flex items-center group'>
+            <LoadingLink href='/' className='flex items-center group'>
               <motion.div
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
@@ -180,7 +187,7 @@ export default function AppBar() {
                   </div>
                 </div>
               </motion.div>
-            </Link>
+            </LoadingLink>
 
             {/* Desktop Navigation */}
             <nav className='hidden md:flex items-center space-x-2'>
@@ -191,121 +198,60 @@ export default function AppBar() {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.5, delay: index * 0.1 }}
                 >
-                  {section.href.startsWith('/') ? (
-                    <Link href={section.href} prefetch={true}>
-                      <button
-                        onClick={() => setActiveSection(section.id)}
-                        className={`relative px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 group ${
-                          activeSection === section.id
-                            ? 'text-white bg-gradient-to-r from-indigo-600 to-purple-600'
-                            : 'text-gray-300 hover:text-white hover:bg-indigo-500/10'
-                        }`}
+                  <button
+                    onClick={() => handleSectionClick(section.id, section.href)}
+                    className={`relative px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 group ${
+                      activeSection === section.id
+                        ? 'text-white bg-gradient-to-r from-indigo-600 to-purple-600'
+                        : 'text-gray-300 hover:text-white hover:bg-indigo-500/10'
+                    }`}
+                  >
+                    {/* Active section glow */}
+                    {activeSection === section.id && (
+                      <motion.div
+                        layoutId='activeSection'
+                        className='absolute inset-0 bg-gradient-to-r from-indigo-600 to-purple-600 rounded-full'
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{
+                          type: 'spring',
+                          stiffness: 400,
+                          damping: 30,
+                        }}
+                      />
+                    )}
+
+                    {/* Hover glow effect */}
+                    <div className='absolute inset-0 rounded-full bg-gradient-to-r from-indigo-500/20 to-purple-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300' />
+
+                    <span className='relative flex items-center space-x-2'>
+                      <motion.div
+                        whileHover={{ scale: 1.1, rotate: 5 }}
+                        transition={{
+                          type: 'spring',
+                          stiffness: 400,
+                          damping: 10,
+                        }}
                       >
-                        {/* Active section glow */}
-                        {activeSection === section.id && (
-                          <motion.div
-                            layoutId='activeSection'
-                            className='absolute inset-0 bg-gradient-to-r from-indigo-600 to-purple-600 rounded-full'
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: 1 }}
-                            transition={{
-                              type: 'spring',
-                              stiffness: 400,
-                              damping: 30,
-                            }}
-                          />
-                        )}
+                        <section.Icon className='w-4 h-4' />
+                      </motion.div>
+                      <span>{section.label}</span>
+                    </span>
 
-                        {/* Hover glow effect */}
-                        <div className='absolute inset-0 rounded-full bg-gradient-to-r from-indigo-500/20 to-purple-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300' />
-
-                        <span className='relative flex items-center space-x-2'>
-                          <motion.div
-                            whileHover={{ scale: 1.1, rotate: 5 }}
-                            transition={{
-                              type: 'spring',
-                              stiffness: 400,
-                              damping: 10,
-                            }}
-                          >
-                            <section.Icon className='w-4 h-4' />
-                          </motion.div>
-                          <span>{section.label}</span>
-                        </span>
-
-                        {/* Floating indicator */}
-                        {activeSection === section.id && (
-                          <motion.div
-                            className='absolute -bottom-6 left-1/2 w-1 h-1 bg-indigo-400 rounded-full'
-                            initial={{ scale: 0, x: '-50%' }}
-                            animate={{ scale: 1, x: '-50%' }}
-                            transition={{
-                              type: 'spring',
-                              stiffness: 400,
-                              damping: 30,
-                            }}
-                          />
-                        )}
-                      </button>
-                    </Link>
-                  ) : (
-                    <button
-                      onClick={() =>
-                        handleSectionClick(section.id, section.href)
-                      }
-                      className={`relative px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 group ${
-                        activeSection === section.id
-                          ? 'text-white bg-gradient-to-r from-indigo-600 to-purple-600'
-                          : 'text-gray-300 hover:text-white hover:bg-indigo-500/10'
-                      }`}
-                    >
-                      {/* Active section glow */}
-                      {activeSection === section.id && (
-                        <motion.div
-                          layoutId='activeSection'
-                          className='absolute inset-0 bg-gradient-to-r from-indigo-600 to-purple-600 rounded-full'
-                          initial={{ opacity: 0 }}
-                          animate={{ opacity: 1 }}
-                          transition={{
-                            type: 'spring',
-                            stiffness: 400,
-                            damping: 30,
-                          }}
-                        />
-                      )}
-
-                      {/* Hover glow effect */}
-                      <div className='absolute inset-0 rounded-full bg-gradient-to-r from-indigo-500/20 to-purple-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300' />
-
-                      <span className='relative flex items-center space-x-2'>
-                        <motion.div
-                          whileHover={{ scale: 1.1, rotate: 5 }}
-                          transition={{
-                            type: 'spring',
-                            stiffness: 400,
-                            damping: 10,
-                          }}
-                        >
-                          <section.Icon className='w-4 h-4' />
-                        </motion.div>
-                        <span>{section.label}</span>
-                      </span>
-
-                      {/* Floating indicator */}
-                      {activeSection === section.id && (
-                        <motion.div
-                          className='absolute -bottom-6 left-1/2 w-1 h-1 bg-indigo-400 rounded-full'
-                          initial={{ scale: 0, x: '-50%' }}
-                          animate={{ scale: 1, x: '-50%' }}
-                          transition={{
-                            type: 'spring',
-                            stiffness: 400,
-                            damping: 30,
-                          }}
-                        />
-                      )}
-                    </button>
-                  )}
+                    {/* Floating indicator */}
+                    {activeSection === section.id && (
+                      <motion.div
+                        className='absolute -bottom-6 left-1/2 w-1 h-1 bg-indigo-400 rounded-full'
+                        initial={{ scale: 0, x: '-50%' }}
+                        animate={{ scale: 1, x: '-50%' }}
+                        transition={{
+                          type: 'spring',
+                          stiffness: 400,
+                          damping: 30,
+                        }}
+                      />
+                    )}
+                  </button>
                 </motion.div>
               ))}
             </nav>
@@ -365,117 +311,59 @@ export default function AppBar() {
               <nav className='container mx-auto px-3 sm:px-4 py-4 sm:py-6 relative'>
                 <div className='grid grid-cols-1 gap-1 sm:gap-2'>
                   {sections.map((section, index) => (
-                    <motion.div
+                    <motion.button
                       key={section.id}
+                      onClick={() =>
+                        handleSectionClick(section.id, section.href)
+                      }
                       initial={{ opacity: 0, x: -50 }}
                       animate={{ opacity: 1, x: 0 }}
                       transition={{ duration: 0.3, delay: index * 0.1 }}
+                      className={`relative p-3 sm:p-4 rounded-xl text-left transition-all duration-300 group ${
+                        activeSection === section.id
+                          ? 'bg-gradient-to-r from-indigo-600/20 to-purple-600/20 text-white border border-indigo-500/30'
+                          : 'text-gray-300 hover:bg-indigo-500/10 hover:text-white'
+                      }`}
                     >
-                      {section.href.startsWith('/') ? (
-                        <Link href={section.href} prefetch={true}>
-                          <button
-                            onClick={() => {
-                              setActiveSection(section.id)
-                              setMobileMenuOpen(false)
-                            }}
-                            className={`w-full relative p-3 sm:p-4 rounded-xl text-left transition-all duration-300 group ${
-                              activeSection === section.id
-                                ? 'bg-gradient-to-r from-indigo-600/20 to-purple-600/20 text-white border border-indigo-500/30'
-                                : 'text-gray-300 hover:bg-indigo-500/10 hover:text-white'
-                            }`}
-                          >
-                            {/* Active indicator */}
-                            {activeSection === section.id && (
-                              <motion.div
-                                className='absolute left-0 top-1/2 w-1 h-8 bg-gradient-to-b from-indigo-400 to-purple-400 rounded-r-full'
-                                initial={{ scaleY: 0, y: '-50%' }}
-                                animate={{ scaleY: 1, y: '-50%' }}
-                                transition={{
-                                  type: 'spring',
-                                  stiffness: 400,
-                                  damping: 30,
-                                }}
-                              />
-                            )}
-
-                            <div className='flex items-center space-x-3 sm:space-x-4'>
-                              <motion.div
-                                className='text-indigo-400 p-1.5 sm:p-2 rounded-lg bg-indigo-500/10'
-                                whileHover={{ scale: 1.2, rotate: 5 }}
-                                transition={{
-                                  type: 'spring',
-                                  stiffness: 400,
-                                  damping: 10,
-                                }}
-                              >
-                                <section.Icon className='w-4 h-4 sm:w-5 sm:h-5' />
-                              </motion.div>
-                              <div>
-                                <span className='font-medium text-base sm:text-lg'>
-                                  {section.label}
-                                </span>
-                                <div className='text-xs text-gray-400 mt-0.5 sm:mt-1'>
-                                  Navigate to {section.label.toLowerCase()}
-                                </div>
-                              </div>
-                            </div>
-
-                            {/* Hover glow effect */}
-                            <div className='absolute inset-0 rounded-xl bg-gradient-to-r from-indigo-500/10 to-purple-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300' />
-                          </button>
-                        </Link>
-                      ) : (
-                        <button
-                          onClick={() =>
-                            handleSectionClick(section.id, section.href)
-                          }
-                          className={`w-full relative p-3 sm:p-4 rounded-xl text-left transition-all duration-300 group ${
-                            activeSection === section.id
-                              ? 'bg-gradient-to-r from-indigo-600/20 to-purple-600/20 text-white border border-indigo-500/30'
-                              : 'text-gray-300 hover:bg-indigo-500/10 hover:text-white'
-                          }`}
-                        >
-                          {/* Active indicator */}
-                          {activeSection === section.id && (
-                            <motion.div
-                              className='absolute left-0 top-1/2 w-1 h-8 bg-gradient-to-b from-indigo-400 to-purple-400 rounded-r-full'
-                              initial={{ scaleY: 0, y: '-50%' }}
-                              animate={{ scaleY: 1, y: '-50%' }}
-                              transition={{
-                                type: 'spring',
-                                stiffness: 400,
-                                damping: 30,
-                              }}
-                            />
-                          )}
-
-                          <div className='flex items-center space-x-3 sm:space-x-4'>
-                            <motion.div
-                              className='text-indigo-400 p-1.5 sm:p-2 rounded-lg bg-indigo-500/10'
-                              whileHover={{ scale: 1.2, rotate: 5 }}
-                              transition={{
-                                type: 'spring',
-                                stiffness: 400,
-                                damping: 10,
-                              }}
-                            >
-                              <section.Icon className='w-4 h-4 sm:w-5 sm:h-5' />
-                            </motion.div>
-                            <div>
-                              <span className='font-medium text-base sm:text-lg'>
-                                {section.label}
-                              </span>
-                              <div className='text-xs text-gray-400 mt-0.5 sm:mt-1'>
-                                Navigate to {section.label.toLowerCase()}
-                              </div>
-                            </div>
-                          </div>
-
-                          {/* Hover glow effect */}
-                          <div className='absolute inset-0 rounded-xl bg-gradient-to-r from-indigo-500/10 to-purple-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300' />
-                        </button>
+                      {/* Active indicator */}
+                      {activeSection === section.id && (
+                        <motion.div
+                          className='absolute left-0 top-1/2 w-1 h-8 bg-gradient-to-b from-indigo-400 to-purple-400 rounded-r-full'
+                          initial={{ scaleY: 0, y: '-50%' }}
+                          animate={{ scaleY: 1, y: '-50%' }}
+                          transition={{
+                            type: 'spring',
+                            stiffness: 400,
+                            damping: 30,
+                          }}
+                        />
                       )}
-                    </motion.div>
+
+                      <div className='flex items-center space-x-3 sm:space-x-4'>
+                        <motion.div
+                          className='text-indigo-400 p-1.5 sm:p-2 rounded-lg bg-indigo-500/10'
+                          whileHover={{ scale: 1.2, rotate: 5 }}
+                          transition={{
+                            type: 'spring',
+                            stiffness: 400,
+                            damping: 10,
+                          }}
+                        >
+                          <section.Icon className='w-4 h-4 sm:w-5 sm:h-5' />
+                        </motion.div>
+                        <div>
+                          <span className='font-medium text-base sm:text-lg'>
+                            {section.label}
+                          </span>
+                          <div className='text-xs text-gray-400 mt-0.5 sm:mt-1'>
+                            Navigate to {section.label.toLowerCase()}
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Hover glow effect */}
+                      <div className='absolute inset-0 rounded-xl bg-gradient-to-r from-indigo-500/10 to-purple-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300' />
+                    </motion.button>
                   ))}
                 </div>
 

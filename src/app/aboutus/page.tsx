@@ -1,16 +1,8 @@
 'use client'
 
 import { motion, useScroll, useTransform } from 'framer-motion'
-import { useRef, useState, useEffect, Suspense } from 'react'
-import dynamic from 'next/dynamic'
-
-// Dynamically import heavy components
-const TeamMemberCard = dynamic(() => import('@/components/3d/TeamMemberCard'), {
-  ssr: false,
-  loading: () => (
-    <div className='h-64 bg-gray-800/20 rounded-lg animate-pulse'></div>
-  ),
-})
+import { useRef, useState, useEffect } from 'react'
+import TeamMemberCard from '@/components/3d/TeamMemberCard'
 
 // 3D Card component with tilt effect
 const Card3D = ({

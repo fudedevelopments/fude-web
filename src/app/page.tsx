@@ -1,9 +1,10 @@
 'use client'
 
-import { useState, useEffect, useRef, Suspense } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import dynamic from 'next/dynamic'
 import { motion, useScroll, useTransform, useInView } from 'framer-motion'
 import Link from 'next/link'
+import LoadingLink from '@/components/ui/LoadingLink'
 import {
   Brain,
   Smartphone,
@@ -45,18 +46,10 @@ import {
 // Dynamically import components with no SSR for performance
 const ThreeChatbot = dynamic(() => import('@/components/ui/ThreeChatbot'), {
   ssr: false,
-  loading: () => null, // Remove loading spinner for faster perceived performance
 })
 const CustomTypewriter = dynamic(
   () => import('@/components/ui/CustomTypewriter'),
-  {
-    ssr: false,
-    loading: () => (
-      <div className='text-xl sm:text-2xl md:text-3xl text-gray-300 mb-8 min-h-[4rem] font-light animate-pulse'>
-        Building the Future with AI ⚡
-      </div>
-    ),
-  }
+  { ssr: false }
 )
 
 export default function Home() {
@@ -237,7 +230,7 @@ export default function Home() {
                     transition={{ duration: 0.8, delay: 0.6 }}
                     className='flex flex-col sm:flex-row gap-4 justify-center mb-12'
                   >
-                    <Link href='/services' prefetch={true}>
+                    <LoadingLink href='/services'>
                       <motion.button
                         className='relative overflow-hidden bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-8 py-4 rounded-2xl text-lg font-semibold group transition-all duration-300 hover:shadow-2xl hover:shadow-indigo-500/25'
                         whileHover={{ scale: 1.05, y: -2 }}
@@ -254,7 +247,7 @@ export default function Home() {
                           transition={{ duration: 0.3 }}
                         />
                       </motion.button>
-                    </Link>
+                    </LoadingLink>
                   </motion.div>
 
                   {/* Company Stats - Horizontal Layout */}
@@ -552,11 +545,7 @@ export default function Home() {
                   <MessageCircle className='w-5 h-5' />
                   <span>Start a Project</span>
                 </motion.button>
-                <Link
-                  href='/services'
-                  className='w-full sm:w-auto'
-                  prefetch={true}
-                >
+                <LoadingLink href='/services' className='w-full sm:w-auto'>
                   <motion.button
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
@@ -565,7 +554,7 @@ export default function Home() {
                     <Briefcase className='w-5 h-5' />
                     <span>View Services</span>
                   </motion.button>
-                </Link>
+                </LoadingLink>
               </div>
 
               {/* Contact Info */}

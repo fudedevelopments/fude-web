@@ -31,10 +31,6 @@ body {
     rgb(var(--background-end-rgb))
   );
   font-family: var(--font-inter);
-  /* Performance optimizations */
-  will-change: auto;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
 }
 
 h1,
@@ -44,16 +40,6 @@ h4,
 h5,
 h6 {
   font-family: var(--font-poppins);
-}
-
-/* Performance optimizations for animations */
-.optimize-animations * {
-  will-change: transform, opacity;
-}
-
-/* Fast page transitions */
-.page-transition {
-  transition: opacity 0.15s ease-out, transform 0.15s ease-out;
 }
 
 /* Custom scrollbar */

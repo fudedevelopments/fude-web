@@ -3,6 +3,7 @@
 import { motion } from 'framer-motion'
 import { MessageCircle } from 'lucide-react'
 import Link from 'next/link'
+import LoadingLink from '@/components/ui/LoadingLink'
 
 export default function CTASection() {
   return (
@@ -26,7 +27,7 @@ export default function CTASection() {
             together. Get a free consultation today!
           </p>
           <div className='flex justify-center'>
-            <Link href='/contactus'>
+            <LoadingLink href='/contactus'>
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
@@ -35,7 +36,7 @@ export default function CTASection() {
                 <MessageCircle className='w-5 h-5 mr-2' />
                 Contact Us
               </motion.button>
-            </Link>
+            </LoadingLink>
           </div>
         </motion.div>
       </div>
