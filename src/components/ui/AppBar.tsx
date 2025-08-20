@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
+import Image from 'next/image';
 import { useRouter, usePathname } from 'next/navigation';
 import { 
     Home, 
@@ -17,10 +18,9 @@ import {
 
 const sections = [
     { id: 'home', label: 'Home', Icon: Home, href: '/' },
+    { id: 'about', label: 'About Us', Icon: Users, href: '/aboutus' },
     { id: 'services', label: 'Services', Icon: Zap, href: '/services' },
-    { id: 'team', label: 'Team', Icon: Users, href: '/team' },
-    { id: 'portfolio', label: 'Portfolio', Icon: Briefcase, href: '/portfolio' },
-    { id: 'contact', label: 'Contact', Icon: Mail, href: '#contact' }
+    { id: 'contact', label: 'Contact', Icon: Mail, href: '/contactus' }
 ];
 
 export default function AppBar() {
@@ -34,12 +34,12 @@ export default function AppBar() {
         // Set active section based on current pathname
         if (pathname === '/') {
             setActiveSection('home');
+        } else if (pathname === '/aboutus') {
+            setActiveSection('about');
         } else if (pathname === '/services') {
             setActiveSection('services');
-        } else if (pathname === '/team') {
-            setActiveSection('team');
-        } else if (pathname === '/portfolio') {
-            setActiveSection('portfolio');
+        } else if (pathname === '/contactus') {
+            setActiveSection('contact');
         } else {
             setActiveSection('home');
         }
@@ -136,11 +136,10 @@ export default function AppBar() {
                                 <div className="absolute inset-0 bg-gradient-to-r from-indigo-500 to-purple-500 rounded-lg blur-lg opacity-20 group-hover:opacity-40 transition-opacity duration-300" />
                                 
                                 <div className="relative flex items-center space-x-2 sm:space-x-3 px-2 sm:px-4 py-1 sm:py-2 rounded-lg bg-gradient-to-r from-gray-800/50 to-gray-900/50 backdrop-blur-sm border border-indigo-500/20">
-                                    {/* AI Brain Icon */}
+                                    {/* Fude Logo */}
                                     <motion.div
                                         animate={{ 
-                                            scale: [1, 1.1, 1],
-                                            rotate: [0, 5, -5, 0]
+                                            scale: [1, 1.05, 1],
                                         }}
                                         transition={{ 
                                             duration: 3, 
@@ -150,19 +149,18 @@ export default function AppBar() {
                                         className="w-6 h-6 sm:w-8 sm:h-8 flex items-center justify-center"
                                     >
                                         <div className="relative">
-                                            <div className="w-5 h-5 sm:w-6 sm:h-6 bg-gradient-to-br from-indigo-400 to-purple-500 rounded-full flex items-center justify-center">
-                                                <Brain className="w-3 h-3 sm:w-4 sm:h-4 text-white" />
-                                            </div>
-                                            {/* Pulsing rings */}
-                                            <motion.div
-                                                className="absolute inset-0 border-2 border-indigo-400/30 rounded-full"
-                                                animate={{ scale: [1, 1.5, 1], opacity: [0.5, 0, 0.5] }}
-                                                transition={{ duration: 2, repeat: Infinity }}
+                                            <Image
+                                                src="/images/logo/fude-logo.svg"
+                                                alt="Fude Logo"
+                                                width={24}
+                                                height={24}
+                                                className="w-5 h-5 sm:w-6 sm:h-6 object-cover rounded-full bg-gray-800/30 p-0.5"
                                             />
+                                            {/* Subtle glow effect */}
                                             <motion.div
-                                                className="absolute inset-0 border-2 border-purple-400/30 rounded-full"
-                                                animate={{ scale: [1, 1.8, 1], opacity: [0.3, 0, 0.3] }}
-                                                transition={{ duration: 2, repeat: Infinity, delay: 0.5 }}
+                                                className="absolute inset-0 bg-gradient-to-r from-indigo-400/20 to-purple-400/20 rounded-full blur-sm"
+                                                animate={{ opacity: [0.3, 0.6, 0.3] }}
+                                                transition={{ duration: 2, repeat: Infinity }}
                                             />
                                         </div>
                                     </motion.div>

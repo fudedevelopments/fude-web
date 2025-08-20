@@ -13,6 +13,11 @@ export const metadata: Metadata = {
   title: "Fude Development – AI-Powered Software Solutions",
   description: "We develop AI-driven websites, Android apps, and smart automation solutions.",
   keywords: "AI, web development, Android apps, machine learning, automation, software development",
+  icons: {
+    icon: "/images/logo/fude-logo.svg",
+    shortcut: "/images/logo/fude-logo.svg",
+    apple: "/images/logo/fude-logo.svg",
+  },
 };
 
 export default function RootLayout({

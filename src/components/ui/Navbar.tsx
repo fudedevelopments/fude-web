@@ -46,7 +46,7 @@ export default function Navbar() {
                 alt='Fude Development Logo'
                 width={40}
                 height={40}
-                className='w-10 h-10'
+                className='w-8 h-8 sm:w-10 sm:h-10 object-cover rounded-full bg-gray-800/30 p-1 hover:scale-110 transition-transform duration-300'
               />
             </Link>
             <div className='hidden md:block ml-10'>

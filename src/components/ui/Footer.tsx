@@ -77,15 +77,15 @@ export default function Footer() {
                 <Link href="/" className="inline-flex items-center group mb-6">
                   <div className="relative">
                     <Image
-                      src="/fude-logo.svg"
+                      src="/images/logo/fude-logo.svg"
                       alt="Fude Development Logo"
                       width={48}
                       height={48}
-                      className="w-12 h-12 group-hover:scale-110 transition-transform duration-300"
+                      className="w-10 h-10 sm:w-12 sm:h-12 object-cover rounded-full bg-gray-800/30 p-1 group-hover:scale-110 transition-transform duration-300"
                     />
                     <div className="absolute inset-0 bg-gradient-to-r from-indigo-500 to-purple-500 rounded-full opacity-0 group-hover:opacity-20 blur-lg transition-opacity duration-300"></div>
                   </div>
-                  <span className="ml-3 text-2xl font-bold bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">
+                  <span className="ml-3 text-xl sm:text-2xl font-bold bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">
                     Fude Developments
                   </span>
                 </Link>

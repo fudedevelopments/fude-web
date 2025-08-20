@@ -2,9 +2,8 @@
 
 import { useState, useEffect, useRef } from 'react';
 import dynamic from 'next/dynamic';
-import { motion, useScroll, useTransform, useInView, AnimatePresence } from 'framer-motion';
+import { motion, useScroll, useTransform, useInView } from 'framer-motion';
 import Link from 'next/link';
-import Image from 'next/image';
 import { 
   Brain, 
   Smartphone, 
@@ -40,24 +39,19 @@ import {
   Handshake,
   Eye,
   Play,
-  MessageCircle,
-  ChevronLeft,
-  ChevronRight,
-  Quote
+  MessageCircle
 } from 'lucide-react';
 
 // Dynamically import components with no SSR for performance
 const Footer = dynamic(() => import('@/components/ui/Footer'), { ssr: false });
 const ThreeChatbot = dynamic(() => import('@/components/ui/ThreeChatbot'), { ssr: false });
 const NeuralNetworkBackground = dynamic(() => import('@/components/3d/NeuralNetworkBackground'), { ssr: false });
-const CustomSpline = dynamic(() => import('@/components/3d/CustomSpline'), { ssr: false });
 const AppBar = dynamic(() => import('@/components/ui/AppBar'), { ssr: false });
 const CustomTypewriter = dynamic(() => import('@/components/ui/CustomTypewriter'), { ssr: false });
 
 export default function Home() {
   const [isHovered, setIsHovered] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
-  const [currentTestimonial, setCurrentTestimonial] = useState(0);
   const [hoveredStatIndex, setHoveredStatIndex] = useState<number | null>(null);
   const [hoveredValueIndex, setHoveredValueIndex] = useState<number | null>(null);
   const [hoveredChoiceIndex, setHoveredChoiceIndex] = useState<number | null>(null);
@@ -83,40 +77,10 @@ export default function Home() {
   });
 
   // Company data
-  const testimonials = [
-    {
-      name: "Sarah Johnson",
-      role: "CEO, TechStart",
-      image: "https://images.unsplash.com/photo-1494790108755-2616b612bb84?w=150&h=150&fit=crop&crop=face",
-      content: "Fude Dev transformed our business with their AI-powered solutions. The results exceeded our expectations!",
-      rating: 5
-    },
-    {
-      name: "Michael Chen",
-      role: "CTO, InnovateNow",
-      image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face",
-      content: "Outstanding development team! They delivered our mobile app on time and with exceptional quality.",
-      rating: 5
-    },
-    {
-      name: "Emily Rodriguez",
-      role: "Founder, GrowthCorp",
-      image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150&h=150&fit=crop&crop=face",
-      content: "Professional, reliable, and innovative. Fude Dev is our go-to partner for all development needs.",
-      rating: 5
-    }
-  ];
 
   useEffect(() => {
     setIsMounted(true);
-    
-    // Auto-rotate testimonials
-    const interval = setInterval(() => {
-      setCurrentTestimonial((prev) => (prev + 1) % testimonials.length);
-    }, 5000);
-    
-    return () => clearInterval(interval);
-  }, [testimonials.length]);
+  }, []);
 
   // Company stats
   const companyStats = [
@@ -201,16 +165,6 @@ export default function Home() {
         {isMounted && <NeuralNetworkBackground />}
       </div>
 
-      {/* Spline Robot - fixed position on left side */}
-      <div
-        className="fixed inset-y-0 left-0 w-1/2 hidden lg:block"
-        style={{ zIndex: 1 }}
-      >
-        {isMounted && (
-          <CustomSpline scene='https://prod.spline.design/YFoLw57TNWMbFovw/scene.splinecode' />
-        )}
-      </div>
-
       {/* Chatbot */}
       <div style={{ zIndex: 50 }}>
         <ThreeChatbot />
@@ -222,123 +176,124 @@ export default function Home() {
       {/* Main content */}
       <div className='relative' style={{ zIndex: 10 }}>
         {/* Hero Section */}
-        <section id="home" className="relative min-h-screen flex items-center justify-center pt-16">
+        <section id="home" className="relative min-h-screen flex items-center justify-center pt-16 overflow-hidden">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8 mt-20 lg:mt-16">
-            <div className="max-w-4xl mx-auto lg:mr-0 lg:ml-auto lg:pr-8 lg:w-1/2 text-center lg:text-left">
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: 0.4 }}
-              >
-                <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-white mb-6 neon-text leading-tight">
-                  Welcome to <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500">Fude Developments</span>
-                </h1>
-              </motion.div>
-
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: 0.6 }}
-                className="text-base sm:text-lg md:text-xl lg:text-2xl text-gray-300 mb-8 min-h-[3rem] sm:min-h-[3.5rem] md:min-h-[4rem]"
-              >
-                <CustomTypewriter
-                  strings={[
-                    'Building the Future with AI',
-                    'Transforming Ideas into Reality',
-                    'Your Trusted Development Partner'
-                  ]}
-                  loop={true}
-                  typeSpeed={80}
-                  deleteSpeed={50}
-                  delayBetweenStrings={1500}
-                />
-              </motion.div>
-
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: 0.8 }}
-                className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start mb-12"
-              >
-                <Link href="/services">
-                  <motion.button
-                    className="relative overflow-hidden bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-6 sm:px-8 py-3 sm:py-4 rounded-full text-base sm:text-lg font-medium group w-full sm:w-auto"
-                    onMouseEnter={() => setIsHovered(true)}
-                    onMouseLeave={() => setIsHovered(false)}
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                  >
-                    <span className="relative flex items-center space-x-2">
-                      <span>Explore Services</span>
-                      <ArrowRight className="w-5 h-5" />
-                    </span>
-                    <motion.div
-                      className="absolute inset-0 bg-gradient-to-r from-indigo-500 to-purple-500"
-                      initial={{ x: '-100%' }}
-                      animate={{ x: isHovered ? '0%' : '-100%' }}
-                      transition={{ duration: 0.3 }}
-                    />
-                  </motion.button>
-                </Link>
-
-                <motion.button
-                  className="relative overflow-hidden bg-transparent border-2 border-indigo-500 text-white px-6 sm:px-8 py-3 sm:py-4 rounded-full text-base sm:text-lg font-medium hover:border-purple-500 flex items-center justify-center space-x-2 w-full sm:w-auto"
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                >
-                  <Play className="w-5 h-5" />
-                  <span>Watch Demo</span>
-                </motion.button>
-              </motion.div>
-
-              {/* Company Stats */}
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: 1.0 }}
-                className="grid grid-cols-2 gap-4 sm:gap-6 mb-16 sm:mb-20 lg:mb-8"
-              >
-                {companyStats.map((stat, index) => (
+            <div className="max-w-4xl mx-auto">
+              <div className="flex items-center justify-center">
+                
+                {/* Main Content - Centered */}
+                <div className="text-center w-full">
                   <motion.div
-                    key={index}
-                    className="relative flex flex-col items-center text-center p-4 sm:p-6 bg-gray-900/20 backdrop-blur-sm rounded-2xl border border-gray-700/30 hover:border-indigo-500/30 transition-all duration-300 overflow-hidden"
-                    whileHover={{ scale: 1.02, y: -2 }}
-                    initial={{ opacity: 0, y: 20 }}
+                    initial={{ opacity: 0, y: 30 }}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.6, delay: 1.2 + index * 0.1 }}
-                    onMouseEnter={() => setHoveredStatIndex(index)}
-                    onMouseLeave={() => setHoveredStatIndex(null)}
-                    onMouseMove={handleCardMouseMove}
+                    transition={{ duration: 0.8, delay: 0.2 }}
                   >
-                    <div 
-                      className="absolute inset-0 rounded-2xl"
-                      style={getCardGradientStyle(hoveredStatIndex === index)}
-                    />
-                    <div className="relative z-10 w-16 h-16 sm:w-18 sm:h-18 bg-gradient-to-br from-indigo-500/20 to-purple-500/20 rounded-2xl flex items-center justify-center border border-indigo-500/40 mb-3 sm:mb-4">
-                      <stat.icon className="w-8 h-8 sm:w-9 sm:h-9 text-indigo-400" />
+                    <div className="inline-flex items-center px-4 py-2 rounded-full bg-gradient-to-r from-indigo-500/10 to-purple-500/10 border border-indigo-500/20 mb-6">
+                      <Sparkles className="w-5 h-5 text-indigo-400 mr-2" />
+                      <span className="text-sm font-medium text-indigo-300">AI-Powered Development</span>
                     </div>
-                    <div className="relative z-10">
-                      <div className="text-2xl sm:text-3xl font-bold text-white mb-1">{stat.value}</div>
-                      <div className="text-sm sm:text-base text-gray-400 font-medium">{stat.label}</div>
-                    </div>
+                    
+                    <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold text-white mb-6 leading-tight">
+                      Welcome to{" "}
+                      <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 via-purple-500 to-pink-500">
+                        Fude
+                      </span>{" "}
+                      <br />
+                      <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-500 via-pink-500 to-red-500">
+                        Developments
+                      </span>
+                    </h1>
                   </motion.div>
-                ))}
-              </motion.div>
+
+                  <motion.div
+                    initial={{ opacity: 0, y: 30 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.8, delay: 0.4 }}
+                    className="text-xl sm:text-2xl md:text-3xl text-gray-300 mb-8 min-h-[4rem] font-light"
+                  >
+                    <CustomTypewriter
+                      strings={[
+                        'Building the Future with AI ⚡',
+                        'Transforming Ideas into Reality 🚀',
+                        'Your Trusted Development Partner 🤝'
+                      ]}
+                      loop={true}
+                      typeSpeed={60}
+                      deleteSpeed={40}
+                      delayBetweenStrings={2000}
+                    />
+                  </motion.div>
+
+                  <motion.div
+                    initial={{ opacity: 0, y: 30 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.8, delay: 0.6 }}
+                    className="flex flex-col sm:flex-row gap-4 justify-center mb-12"
+                  >
+                    <Link href="/services">
+                      <motion.button
+                        className="relative overflow-hidden bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-8 py-4 rounded-2xl text-lg font-semibold group transition-all duration-300 hover:shadow-2xl hover:shadow-indigo-500/25"
+                        whileHover={{ scale: 1.05, y: -2 }}
+                        whileTap={{ scale: 0.95 }}
+                      >
+                        <span className="relative flex items-center justify-center space-x-2">
+                          <Rocket className="w-5 h-5" />
+                          <span>Explore Services</span>
+                        </span>
+                        <motion.div
+                          className="absolute inset-0 bg-gradient-to-r from-indigo-500 to-purple-500"
+                          initial={{ x: '-100%' }}
+                          animate={{ x: isHovered ? '0%' : '-100%' }}
+                          transition={{ duration: 0.3 }}
+                        />
+                      </motion.button>
+                    </Link>
+                  </motion.div>
+
+                  {/* Company Stats - Horizontal Layout */}
+                  <motion.div
+                    initial={{ opacity: 0, y: 30 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.8, delay: 0.8 }}
+                    className="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-6 mb-8"
+                  >
+                    {companyStats.map((stat, index) => (
+                      <motion.div
+                        key={index}
+                        className="relative text-center group"
+                        whileHover={{ scale: 1.05 }}
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.6, delay: 0.9 + index * 0.1 }}
+                      >
+                        <div className="relative bg-gray-900/30 backdrop-blur-sm border border-gray-700/50 rounded-2xl p-4 hover:border-indigo-500/50 transition-all duration-300 h-32 flex flex-col items-center justify-center">
+                          <stat.icon className="w-12 h-12 text-indigo-400 mb-3" />
+                          <div className="text-xl sm:text-2xl font-bold text-white mb-1">{stat.value}</div>
+                          <div className="text-xs text-gray-400 font-medium text-center leading-tight px-2">{stat.label}</div>
+                        </div>
+                      </motion.div>
+                    ))}
+                  </motion.div>
+                </div>
+              </div>
             </div>
           </div>
 
           {/* Scroll indicator */}
           <motion.div
-            className="absolute bottom-4 sm:bottom-6 lg:bottom-10 left-1/2 transform -translate-x-1/2"
-            animate={{ y: [0, 8, 0] }}
-            transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+            className="absolute bottom-6 left-1/2 transform -translate-x-1/2"
+            animate={{ y: [0, 12, 0] }}
+            transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
           >
-            <div className="w-5 h-8 sm:w-6 sm:h-10 border-2 border-gray-400 rounded-full flex justify-center">
-              <motion.div
-                className="w-0.5 h-2 sm:w-1 sm:h-3 bg-gray-400 rounded-full mt-1.5 sm:mt-2"
-                animate={{ y: [0, 10, 0] }}
-                transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
-              />
+            <div className="flex flex-col items-center space-y-2">
+              <div className="w-6 h-10 border-2 border-gray-400/60 rounded-full flex justify-center relative">
+                <motion.div
+                  className="w-1 h-3 bg-gradient-to-b from-indigo-400 to-purple-400 rounded-full mt-2"
+                  animate={{ y: [0, 16, 0], opacity: [1, 0, 1] }}
+                  transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+                />
+              </div>
+              <span className="text-xs text-gray-500 font-medium">Scroll Down</span>
             </div>
           </motion.div>
         </section>
@@ -379,8 +334,8 @@ export default function Home() {
                     className="absolute inset-0 rounded-3xl"
                     style={getCardGradientStyle(hoveredValueIndex === index)}
                   />
-                  <div className={`relative z-10 w-20 h-20 bg-gradient-to-br ${value.color} rounded-3xl flex items-center justify-center mx-auto mb-6 opacity-20`}>
-                    <value.icon className="w-10 h-10 text-white" />
+                  <div className={`relative z-10 w-20 h-20 bg-gradient-to-br ${value.color} rounded-3xl flex items-center justify-center mx-auto mb-6 shadow-lg`}>
+                    <value.icon className="w-10 h-10 text-white drop-shadow-lg" />
                   </div>
                   <h3 className="relative z-10 text-2xl font-bold text-white mb-4">{value.title}</h3>
                   <p className="relative z-10 text-gray-400 leading-relaxed">{value.description}</p>
@@ -433,95 +388,6 @@ export default function Home() {
                   <p className="relative z-10 text-gray-400 text-sm leading-relaxed">{point.description}</p>
                 </motion.div>
               ))}
-            </div>
-          </div>
-        </section>
-        {/* Testimonials Section */}
-        <section className="py-16 sm:py-24 relative">
-          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6 }}
-              className="text-center mb-16"
-            >
-              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-4">
-                What Our <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-500 to-purple-500">Clients Say</span>
-              </h2>
-              <p className="max-w-2xl mx-auto text-gray-400 text-lg">
-                Don&apos;t just take our word for it - hear from our satisfied clients
-              </p>
-            </motion.div>
-
-            <div className="relative max-w-4xl mx-auto">
-              <AnimatePresence mode="wait">
-                <motion.div
-                  key={currentTestimonial}
-                  initial={{ opacity: 0, x: 50 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  exit={{ opacity: 0, x: -50 }}
-                  transition={{ duration: 0.5 }}
-                  className="bg-gray-900/50 backdrop-blur-xl border border-gray-700/50 rounded-3xl p-8 lg:p-12"
-                >
-                  <div className="text-center">
-                    <Quote className="w-12 h-12 text-indigo-400/50 mx-auto mb-6" />
-                    <p className="text-xl lg:text-2xl text-gray-300 mb-8 leading-relaxed italic">
-                      &quot;{testimonials[currentTestimonial].content}&quot;
-                    </p>
-                    
-                    <div className="flex items-center justify-center space-x-4 mb-6">
-                      <div className="w-16 h-16 rounded-full bg-gradient-to-br from-indigo-500 to-purple-500 p-1">
-                        <Image
-                          src={testimonials[currentTestimonial].image}
-                          alt={testimonials[currentTestimonial].name}
-                          width={60}
-                          height={60}
-                          className="w-full h-full rounded-full object-cover"
-                        />
-                      </div>
-                      <div className="text-left">
-                        <h4 className="text-lg font-bold text-white">{testimonials[currentTestimonial].name}</h4>
-                        <p className="text-gray-400">{testimonials[currentTestimonial].role}</p>
-                      </div>
-                    </div>
-
-                    <div className="flex justify-center space-x-1">
-                      {[...Array(testimonials[currentTestimonial].rating)].map((_, i) => (
-                        <Star key={i} className="w-5 h-5 text-yellow-400 fill-current" />
-                      ))}
-                    </div>
-                  </div>
-                </motion.div>
-              </AnimatePresence>
-
-              {/* Navigation buttons */}
-              <button
-                onClick={() => setCurrentTestimonial((prev) => (prev - 1 + testimonials.length) % testimonials.length)}
-                className="absolute left-2 top-1/2 -translate-y-1/2 w-10 h-10 bg-indigo-600 hover:bg-indigo-500 rounded-full flex items-center justify-center transition-colors duration-300 z-10 md:left-0 md:-translate-x-12"
-              >
-                <ChevronLeft className="w-5 h-5 text-white" />
-              </button>
-              
-              <button
-                onClick={() => setCurrentTestimonial((prev) => (prev + 1) % testimonials.length)}
-                className="absolute right-2 top-1/2 -translate-y-1/2 w-10 h-10 bg-indigo-600 hover:bg-indigo-500 rounded-full flex items-center justify-center transition-colors duration-300 z-10 md:right-0 md:translate-x-12"
-              >
-                <ChevronRight className="w-5 h-5 text-white" />
-              </button>
-
-              {/* Dots indicator */}
-              <div className="flex justify-center space-x-2 mt-8">
-                {testimonials.map((_, index) => (
-                  <button
-                    key={index}
-                    onClick={() => setCurrentTestimonial(index)}
-                    className={`w-3 h-3 rounded-full transition-colors duration-300 ${
-                      index === currentTestimonial ? 'bg-indigo-500' : 'bg-gray-600'
-                    }`}
-                  />
-                ))}
-              </div>
             </div>
           </div>
         </section>
