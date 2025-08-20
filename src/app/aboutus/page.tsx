@@ -101,7 +101,8 @@ const teamMembers = [
     bio: 'Experienced developer in Html, CSS, JavaScript, and Java. Proficient in building responsive web applications and RESTful APIs.',
     image: '/images/team/dinesh.jpg',
     socialLinks: {
-      linkedin: 'https://linkedin.com/in/dineshkumarvs',
+      linkedin:
+        'https://www.linkedin.com/in/dinesh-kumar-v-s-37236a30b?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app',
       github: 'https://github.com/dineshkumarvs',
     },
   },
