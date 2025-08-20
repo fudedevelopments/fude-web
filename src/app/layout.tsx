@@ -3,6 +3,7 @@ import { Inter, Poppins } from 'next/font/google'
 import './globals.css'
 import AppBar from '@/components/ui/AppBar'
 import Footer from '@/components/ui/Footer'
+import NeuralBackgroundWrapper from '@/components/3d/NeuralBackgroundWrapper'
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter' })
 const poppins = Poppins({
@@ -32,9 +33,15 @@ export default function RootLayout({
   return (
     <html lang='en' className='scroll-smooth'>
       <body className={`${inter.variable} ${poppins.variable} font-sans`}>
-        <AppBar />
-        {children}
-        <Footer />
+        {/* Neural Network Background - Fixed and shared across all pages */}
+        <NeuralBackgroundWrapper />
+
+        {/* Main App Structure */}
+        <div className='relative' style={{ zIndex: 10 }}>
+          <AppBar />
+          <main className='relative'>{children}</main>
+          <Footer />
+        </div>
       </body>
     </html>
   )

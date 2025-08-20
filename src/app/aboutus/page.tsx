@@ -3,7 +3,6 @@
 import { motion, useScroll, useTransform } from 'framer-motion'
 import { useRef, useState, useEffect } from 'react'
 import TeamMemberCard from '@/components/3d/TeamMemberCard'
-import NeuralNetworkBackground from '@/components/3d/NeuralNetworkBackground'
 
 // 3D Card component with tilt effect
 const Card3D = ({
@@ -122,7 +121,7 @@ export default function AboutUs() {
       ref={containerRef}
       className='min-h-screen bg-gray-900 relative overflow-hidden'
     >
-      <NeuralNetworkBackground />
+      {/* Neural background is now in layout */}
 
       {/* Simplified Hero Section */}
       <section className='relative pt-32 pb-20 px-4 sm:px-6 lg:px-8'>

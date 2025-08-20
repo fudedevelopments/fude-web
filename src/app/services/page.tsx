@@ -1,14 +1,8 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useEffect } from 'react'
 import dynamic from 'next/dynamic'
 import ServicesGrid from '@/components/services/ServicesGrid'
-
-// Dynamically import components for performance
-const NeuralNetworkBackground = dynamic(
-  () => import('@/components/3d/NeuralNetworkBackground'),
-  { ssr: false }
-)
 
 // Import service components
 const ServicesHero = dynamic(
@@ -35,11 +29,7 @@ const YouTubeSection = dynamic(
 )
 
 export default function ServicesPage() {
-  const [isMounted, setIsMounted] = useState(false)
-
   useEffect(() => {
-    setIsMounted(true)
-
     // Add custom animations to document head
     const style = document.createElement('style')
     style.textContent = `
@@ -63,19 +53,8 @@ export default function ServicesPage() {
 
   return (
     <>
-      {/* Neural Network Background */}
-      <div
-        className='fixed inset-0'
-        style={{
-          zIndex: 0,
-          background:
-            'linear-gradient(to bottom, #000000, #050510, #050510, #000000)',
-        }}
-      >
-        {isMounted && <NeuralNetworkBackground />}
-      </div>
-      {/* Main content */}
-      <div className='relative' style={{ zIndex: 10 }}>
+      {/* Main content - Neural background is now in layout */}
+      <div className='relative'>
         <ServicesGrid />
         <ProcessSteps />
         <TechnologyStack />

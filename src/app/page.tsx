@@ -46,10 +46,6 @@ import {
 const ThreeChatbot = dynamic(() => import('@/components/ui/ThreeChatbot'), {
   ssr: false,
 })
-const NeuralNetworkBackground = dynamic(
-  () => import('@/components/3d/NeuralNetworkBackground'),
-  { ssr: false }
-)
 const CustomTypewriter = dynamic(
   () => import('@/components/ui/CustomTypewriter'),
   { ssr: false }
@@ -57,7 +53,6 @@ const CustomTypewriter = dynamic(
 
 export default function Home() {
   const [isHovered, setIsHovered] = useState(false)
-  const [isMounted, setIsMounted] = useState(false)
   const [hoveredStatIndex, setHoveredStatIndex] = useState<number | null>(null)
   const [hoveredValueIndex, setHoveredValueIndex] = useState<number | null>(
     null
@@ -89,10 +84,6 @@ export default function Home() {
   })
 
   // Company data
-
-  useEffect(() => {
-    setIsMounted(true)
-  }, [])
 
   // Company stats
   const companyStats = [
@@ -172,25 +163,13 @@ export default function Home() {
 
   return (
     <>
-      {/* Neural Network Background - always visible */}
-      <div
-        className='fixed inset-0'
-        style={{
-          zIndex: 0,
-          background:
-            'linear-gradient(to bottom, #000000, #050510, #050510, #000000)',
-        }}
-      >
-        {isMounted && <NeuralNetworkBackground />}
-      </div>
-
       {/* Chatbot */}
       <div style={{ zIndex: 50 }}>
         <ThreeChatbot />
       </div>
 
-      {/* Main content */}
-      <div className='relative' style={{ zIndex: 10 }}>
+      {/* Main content - Neural background is now in layout */}
+      <div className='relative'>
         {/* Hero Section */}
         <section
           id='home'
