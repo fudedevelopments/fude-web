@@ -91,8 +91,8 @@ const teamMembers = [
     bio: 'Digital marketing specialist with expertise in SEO, content marketing, and social media strategy.',
     image: '/images/team/kishore.jpg',
     socialLinks: {
-      linkedin: 'https://linkedin.com/in/kishorer',
-      github: 'https://github.com/kishorer',
+      linkedin: 'https://www.linkedin.com/in/kishore-ramesh-6a2778202',
+      github: 'https://github.com/kishore1804',
     },
   },
   {
