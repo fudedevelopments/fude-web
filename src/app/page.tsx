@@ -1,4 +1,4 @@
-"use client";
+'use client'
 
 import { useState, useEffect, useRef } from 'react';
 import dynamic from 'next/dynamic';
@@ -191,10 +191,11 @@ export default function Home() {
     <>
       {/* Neural Network Background - always visible */}
       <div
-        className="fixed inset-0"
+        className='fixed inset-0'
         style={{
           zIndex: 0,
-          background: 'linear-gradient(to bottom, #000000, #050510, #050510, #000000)'
+          background:
+            'linear-gradient(to bottom, #000000, #050510, #050510, #000000)',
         }}
       >
         {isMounted && <NeuralNetworkBackground />}
@@ -206,7 +207,7 @@ export default function Home() {
         style={{ zIndex: 1 }}
       >
         {isMounted && (
-          <CustomSpline scene="https://prod.spline.design/YFoLw57TNWMbFovw/scene.splinecode" />
+          <CustomSpline scene='https://prod.spline.design/YFoLw57TNWMbFovw/scene.splinecode' />
         )}
       </div>
 
@@ -219,7 +220,7 @@ export default function Home() {
       <AppBar />
 
       {/* Main content */}
-      <div className="relative" style={{ zIndex: 10 }}>
+      <div className='relative' style={{ zIndex: 10 }}>
         {/* Hero Section */}
         <section id="home" className="relative min-h-screen flex items-center justify-center pt-16">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8 mt-20 lg:mt-16">
@@ -435,7 +436,6 @@ export default function Home() {
             </div>
           </div>
         </section>
-
         {/* Testimonials Section */}
         <section className="py-16 sm:py-24 relative">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -659,9 +659,8 @@ export default function Home() {
             </motion.div>
           </div>
         </section>
-
         <Footer />
       </div>
     </>
-  );
+  )
 }
