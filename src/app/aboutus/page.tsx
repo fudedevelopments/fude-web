@@ -68,7 +68,7 @@ const teamMembers = [
     name: 'Praveen M',
     role: 'Frontend Developer',
     bio: 'Skilled frontend developer with a passion for creating beautiful and functional user interfaces. Expert in React, Next.js, and Flutter.',
-    image: '/images/team/praveen.jpg', // You can replace with actual images later
+    image: '/images/team/praveen.jpg',
     socialLinks: {
       linkedin: 'https://www.linkedin.com/in/praveen-kumar-03320326b/',
       twitter: 'https://x.com/Praveenstark08',
