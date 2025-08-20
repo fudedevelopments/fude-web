@@ -1,6 +1,7 @@
 'use client'
 
 import dynamic from 'next/dynamic'
+import { useState, useEffect } from 'react'
 
 // Client-side component that can use ssr: false
 const SmartNeuralBackground = dynamic(() => import('./SmartNeuralBackground'), {
@@ -14,6 +15,12 @@ const SmartNeuralBackground = dynamic(() => import('./SmartNeuralBackground'), {
 })
 
 export default function NeuralBackgroundWrapper() {
+  const [isClient, setIsClient] = useState(false)
+
+  useEffect(() => {
+    setIsClient(true)
+  }, [])
+
   return (
     <div
       className='fixed inset-0'
@@ -23,7 +30,9 @@ export default function NeuralBackgroundWrapper() {
           'linear-gradient(to bottom, #000000, #050510, #050510, #000000)',
       }}
     >
-      <SmartNeuralBackground enablePerformanceMode={true} forceMode='auto' />
+      {isClient && (
+        <SmartNeuralBackground enablePerformanceMode={true} forceMode='auto' />
+      )}
     </div>
   )
 }

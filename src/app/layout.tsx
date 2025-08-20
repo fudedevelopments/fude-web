@@ -4,6 +4,7 @@ import './globals.css'
 import AppBar from '@/components/ui/AppBar'
 import Footer from '@/components/ui/Footer'
 import NeuralBackgroundWrapper from '@/components/3d/NeuralBackgroundWrapper'
+import PageTransition from '@/components/ui/PageTransition'
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter' })
 const poppins = Poppins({
@@ -39,7 +40,9 @@ export default function RootLayout({
         {/* Main App Structure */}
         <div className='relative' style={{ zIndex: 10 }}>
           <AppBar />
-          <main className='relative'>{children}</main>
+          <main className='relative'>
+            <PageTransition>{children}</PageTransition>
+          </main>
           <Footer />
         </div>
       </body>

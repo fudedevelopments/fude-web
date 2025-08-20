@@ -1,31 +1,62 @@
 'use client'
 
-import { useEffect } from 'react'
+import { useEffect, Suspense } from 'react'
 import dynamic from 'next/dynamic'
 import ServicesGrid from '@/components/services/ServicesGrid'
 
-// Import service components
+// Import service components with improved loading
 const ServicesHero = dynamic(
   () => import('@/components/services/ServicesHero'),
-  { ssr: false }
+  {
+    ssr: false,
+    loading: () => (
+      <div className='min-h-[50vh] flex items-center justify-center'>
+        <div className='animate-pulse text-center'>
+          <div className='h-12 bg-gray-700/30 rounded-lg mb-4 w-64 mx-auto'></div>
+          <div className='h-6 bg-gray-700/20 rounded w-96 mx-auto'></div>
+        </div>
+      </div>
+    ),
+  }
 )
 const ProcessSteps = dynamic(
   () => import('@/components/services/ProcessSteps'),
-  { ssr: false }
+  {
+    ssr: false,
+    loading: () => (
+      <div className='h-32 bg-gray-800/20 rounded-lg animate-pulse'></div>
+    ),
+  }
 )
 const TechnologyStack = dynamic(
   () => import('@/components/services/TechnologyStack'),
-  { ssr: false }
+  {
+    ssr: false,
+    loading: () => (
+      <div className='h-32 bg-gray-800/20 rounded-lg animate-pulse'></div>
+    ),
+  }
 )
 const WhyChooseUs = dynamic(() => import('@/components/services/WhyChooseUs'), {
   ssr: false,
+  loading: () => (
+    <div className='h-32 bg-gray-800/20 rounded-lg animate-pulse'></div>
+  ),
 })
 const CTASection = dynamic(() => import('@/components/services/CTASection'), {
   ssr: false,
+  loading: () => (
+    <div className='h-32 bg-gray-800/20 rounded-lg animate-pulse'></div>
+  ),
 })
 const YouTubeSection = dynamic(
   () => import('@/components/services/YouTubeSection'),
-  { ssr: false }
+  {
+    ssr: false,
+    loading: () => (
+      <div className='h-32 bg-gray-800/20 rounded-lg animate-pulse'></div>
+    ),
+  }
 )
 
 export default function ServicesPage() {
