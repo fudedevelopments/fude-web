@@ -2,6 +2,7 @@
 
 import { motion, useScroll, useTransform } from 'framer-motion'
 import { useRef, useState } from 'react'
+import ContactForm from '@/components/ui/ContactForm'
 
 // 3D Card component with tilt effect
 const Card3D = ({
@@ -69,32 +70,6 @@ export default function ContactUs() {
 
   const y = useTransform(scrollYProgress, [0, 1], ['0%', '50%'])
   const opacity = useTransform(scrollYProgress, [0, 0.5], [1, 0])
-
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    phone: '',
-    subject: '',
-    message: '',
-    projectType: 'web-development',
-  })
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-    // Handle form submission here
-    console.log('Form submitted:', formData)
-  }
-
-  const handleInputChange = (
-    e: React.ChangeEvent<
-      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
-    >
-  ) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    })
-  }
 
   return (
     <div
@@ -204,152 +179,7 @@ export default function ContactUs() {
                     Today
                   </motion.h2>
 
-                  <form onSubmit={handleSubmit} className='space-y-6'>
-                    <div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
-                      <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 0.6, delay: 0.3 }}
-                      >
-                        <label className='block text-sm font-medium text-gray-300 mb-2'>
-                          Full Name *
-                        </label>
-                        <input
-                          type='text'
-                          name='name'
-                          value={formData.name}
-                          onChange={handleInputChange}
-                          required
-                          className='w-full px-4 py-3 bg-gray-700/50 border border-gray-600/50 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all duration-300'
-                          placeholder='Your full name'
-                        />
-                      </motion.div>
-
-                      <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 0.6, delay: 0.4 }}
-                      >
-                        <label className='block text-sm font-medium text-gray-300 mb-2'>
-                          Email Address *
-                        </label>
-                        <input
-                          type='email'
-                          name='email'
-                          value={formData.email}
-                          onChange={handleInputChange}
-                          required
-                          className='w-full px-4 py-3 bg-gray-700/50 border border-gray-600/50 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all duration-300'
-                          placeholder='your.email@example.com'
-                        />
-                      </motion.div>
-                    </div>
-
-                    <div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
-                      <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 0.6, delay: 0.5 }}
-                      >
-                        <label className='block text-sm font-medium text-gray-300 mb-2'>
-                          Phone Number
-                        </label>
-                        <input
-                          type='tel'
-                          name='phone'
-                          value={formData.phone}
-                          onChange={handleInputChange}
-                          className='w-full px-4 py-3 bg-gray-700/50 border border-gray-600/50 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all duration-300'
-                          placeholder='+91 XXXXX XXXXX'
-                        />
-                      </motion.div>
-
-                      <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 0.6, delay: 0.6 }}
-                      >
-                        <label className='block text-sm font-medium text-gray-300 mb-2'>
-                          Project Type
-                        </label>
-                        <select
-                          name='projectType'
-                          value={formData.projectType}
-                          onChange={handleInputChange}
-                          className='w-full px-4 py-3 bg-gray-700/50 border border-gray-600/50 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all duration-300'
-                        >
-                          <option value='web-development'>
-                            Web Development
-                          </option>
-                          <option value='mobile-app'>Mobile App</option>
-                          <option value='ai-development'>AI Development</option>
-                          <option value='automation'>Automation</option>
-                          <option value='consulting'>Consulting</option>
-                          <option value='other'>Other</option>
-                        </select>
-                      </motion.div>
-                    </div>
-
-                    <motion.div
-                      initial={{ opacity: 0, y: 20 }}
-                      whileInView={{ opacity: 1, y: 0 }}
-                      viewport={{ once: true }}
-                      transition={{ duration: 0.6, delay: 0.7 }}
-                    >
-                      <label className='block text-sm font-medium text-gray-300 mb-2'>
-                        Subject *
-                      </label>
-                      <input
-                        type='text'
-                        name='subject'
-                        value={formData.subject}
-                        onChange={handleInputChange}
-                        required
-                        className='w-full px-4 py-3 bg-gray-700/50 border border-gray-600/50 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all duration-300'
-                        placeholder='Project discussion, collaboration, etc.'
-                      />
-                    </motion.div>
-
-                    <motion.div
-                      initial={{ opacity: 0, y: 20 }}
-                      whileInView={{ opacity: 1, y: 0 }}
-                      viewport={{ once: true }}
-                      transition={{ duration: 0.6, delay: 0.8 }}
-                    >
-                      <label className='block text-sm font-medium text-gray-300 mb-2'>
-                        Message *
-                      </label>
-                      <textarea
-                        name='message'
-                        value={formData.message}
-                        onChange={handleInputChange}
-                        required
-                        rows={6}
-                        className='w-full px-4 py-3 bg-gray-700/50 border border-gray-600/50 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all duration-300 resize-none'
-                        placeholder='Tell us about your project requirements, timeline, and any specific needs...'
-                      />
-                    </motion.div>
-
-                    <motion.button
-                      type='submit'
-                      initial={{ opacity: 0, y: 20 }}
-                      whileInView={{ opacity: 1, y: 0 }}
-                      viewport={{ once: true }}
-                      transition={{ duration: 0.6, delay: 0.9 }}
-                      whileHover={{
-                        scale: 1.05,
-                        boxShadow: '0 20px 40px rgba(99, 102, 241, 0.4)',
-                      }}
-                      whileTap={{ scale: 0.95 }}
-                      className='w-full bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-semibold py-4 px-8 rounded-lg hover:from-indigo-700 hover:to-purple-700 transition-all duration-300 shadow-lg'
-                    >
-                      Send Message
-                    </motion.button>
-                  </form>
+                  <ContactForm />
                 </div>
               </motion.div>
             </Card3D>

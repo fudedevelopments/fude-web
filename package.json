@@ -13,6 +13,7 @@
     "preview_image_url": "https://imagedelivery.net/wSMYJvS3Xw-n339CbDyDIA/e42eec61-db86-49c8-7b29-c3ed4783e400/public"
   },
   "dependencies": {
+    "@formspree/react": "^3.0.0",
     "@react-three/drei": "^10.0.4",
     "@react-three/fiber": "^9.0.4",
     "@splinetool/react-spline": "^4.0.0",

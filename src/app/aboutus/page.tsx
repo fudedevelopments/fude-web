@@ -104,6 +104,17 @@ const teamMembers = [
       github: 'https://github.com/Dineshkumarvss',
     },
   },
+  {
+    name: 'Mathan M',
+    role: 'Next.js Developer',
+    bio: 'Specialized Next.js developer with expertise in building modern web applications. Skilled in React, TypeScript, and server-side rendering.',
+    image: '/images/team/mathan.jpg',
+    socialLinks: {
+      linkedin:
+        'https://www.linkedin.com/in/mathan-m-7a9740230?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app',
+      github: 'https://github.com/mathan44862',
+    },
+  },
 ]
 
 export default function AboutUs() {

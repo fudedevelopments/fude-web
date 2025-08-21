@@ -139,7 +139,11 @@ export default function TeamMemberCard({
                 src={image}
                 alt={name}
                 fill
-                style={{ objectFit: 'cover' }}
+                style={{
+                  objectFit: 'cover',
+                  objectPosition:
+                    name === 'Mathan M' ? 'center top' : 'center center',
+                }}
                 className='transition-transform duration-500'
                 onError={handleImageError}
                 onLoad={handleImageLoad}
