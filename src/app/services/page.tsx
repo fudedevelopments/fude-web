@@ -27,6 +27,9 @@ const YouTubeSection = dynamic(
   () => import('@/components/services/YouTubeSection'),
   { ssr: false }
 )
+const ChatbaseChatbot = dynamic(() => import('@/components/ui/ChatbaseChatbot'), {
+  ssr: false,
+})
 
 export default function ServicesPage() {
   useEffect(() => {
@@ -53,6 +56,9 @@ export default function ServicesPage() {
 
   return (
     <>
+      {/* Chatbase Chatbot */}
+      <ChatbaseChatbot />
+
       {/* Main content - Neural background is now in layout */}
       <div className='relative'>
         <ServicesGrid />
