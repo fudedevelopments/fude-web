@@ -44,7 +44,7 @@ import {
 } from 'lucide-react'
 
 // Dynamically import components with no SSR for performance
-const ThreeChatbot = dynamic(() => import('@/components/ui/ThreeChatbot'), {
+const ChatbaseChatbot = dynamic(() => import('@/components/ui/ChatbaseChatbot'), {
   ssr: false,
 })
 const CustomTypewriter = dynamic(
@@ -164,10 +164,8 @@ export default function Home() {
 
   return (
     <>
-      {/* Chatbot */}
-      <div style={{ zIndex: 50 }}>
-        <ThreeChatbot />
-      </div>
+      {/* Chatbase Chatbot */}
+      <ChatbaseChatbot />
 
       {/* Main content - Neural background is now in layout */}
       <div className='relative'>

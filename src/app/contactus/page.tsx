@@ -2,6 +2,11 @@
 
 import { motion, useScroll, useTransform } from 'framer-motion'
 import { useRef, useState } from 'react'
+import dynamic from 'next/dynamic'
+
+const ChatbaseChatbot = dynamic(() => import('@/components/ui/ChatbaseChatbot'), {
+  ssr: false,
+})
 
 // 3D Card component with tilt effect
 const Card3D = ({
@@ -97,10 +102,14 @@ export default function ContactUs() {
   }
 
   return (
-    <div
-      ref={containerRef}
-      className='min-h-screen bg-gray-900 relative overflow-hidden'
-    >
+    <>
+      {/* Chatbase Chatbot */}
+      <ChatbaseChatbot />
+
+      <div
+        ref={containerRef}
+        className='min-h-screen bg-gray-900 relative overflow-hidden'
+      >
       {/* Neural background is now in layout */}
 
       {/* Hero Section */}
@@ -1040,6 +1049,7 @@ export default function ContactUs() {
           </motion.div>
         </div>
       </section>
-    </div>
+      </div>
+    </>
   )
 }

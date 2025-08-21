@@ -2,7 +2,12 @@
 
 import { motion, useScroll, useTransform } from 'framer-motion'
 import { useRef, useState, useEffect } from 'react'
+import dynamic from 'next/dynamic'
 import TeamMemberCard from '@/components/3d/TeamMemberCard'
+
+const ChatbaseChatbot = dynamic(() => import('@/components/ui/ChatbaseChatbot'), {
+  ssr: false,
+})
 
 // 3D Card component with tilt effect
 const Card3D = ({
@@ -117,10 +122,14 @@ export default function AboutUs() {
   const opacity = useTransform(scrollYProgress, [0, 0.5], [1, 0])
 
   return (
-    <div
-      ref={containerRef}
-      className='min-h-screen bg-gray-900 relative overflow-hidden'
-    >
+    <>
+      {/* Chatbase Chatbot */}
+      <ChatbaseChatbot />
+
+      <div
+        ref={containerRef}
+        className='min-h-screen bg-gray-900 relative overflow-hidden'
+      >
       {/* Neural background is now in layout */}
 
       {/* Simplified Hero Section */}
@@ -817,6 +826,7 @@ export default function AboutUs() {
           </div>
         </div>
       </section>
-    </div>
+      </div>
+    </>
   )
 }
