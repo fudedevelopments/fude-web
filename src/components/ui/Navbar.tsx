@@ -9,7 +9,6 @@ import LoadingLink from './LoadingLink'
 const navLinks = [
   { name: 'Home', href: '/' },
   { name: 'Services', href: '/services' },
-  { name: 'Portfolio', href: '/#portfolio' },
   { name: 'About', href: '/#about' },
   { name: 'Contact', href: '/#contact' },
 ]
@@ -131,7 +130,7 @@ export default function Navbar() {
             <LoadingLink
               key={link.name}
               href={link.href}
-              className='text-gray-300 hover:text-indigo-400 block px-3 py-2 rounded-md text-base font-medium'
+              className='text-gray-300 hover:text-indigo-400 block px-3 py-2 rounded-md text-base font-medium transition-colors'
               onClick={() => setIsMobileMenuOpen(false)}
             >
               {link.name}

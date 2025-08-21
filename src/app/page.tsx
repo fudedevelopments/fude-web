@@ -285,7 +285,7 @@ export default function Home() {
         </section>
 
         {/* About Company Section */}
-        <section className='py-16 sm:py-24 relative'>
+        <section id='about' className='py-16 sm:py-24 relative'>
           <div className='container mx-auto px-4 sm:px-6 lg:px-8'>
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -513,14 +513,16 @@ export default function Home() {
                 solutions.
               </p>
               <div className='flex flex-col sm:flex-row gap-4 justify-center mb-8'>
-                <motion.button
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  className='bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-6 sm:px-8 py-3 sm:py-4 rounded-full font-medium text-base sm:text-lg hover:from-indigo-500 hover:to-purple-500 transition-all duration-300 flex items-center justify-center space-x-2 w-full sm:w-auto'
-                >
-                  <MessageCircle className='w-5 h-5' />
-                  <span>Start a Project</span>
-                </motion.button>
+                <LoadingLink href='/contactus' className='w-full sm:w-auto'>
+                  <motion.button
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    className='bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-6 sm:px-8 py-3 sm:py-4 rounded-full font-medium text-base sm:text-lg hover:from-indigo-500 hover:to-purple-500 transition-all duration-300 flex items-center justify-center space-x-2 w-full'
+                  >
+                    <MessageCircle className='w-5 h-5' />
+                    <span>Start a Project</span>
+                  </motion.button>
+                </LoadingLink>
                 <LoadingLink href='/services' className='w-full sm:w-auto'>
                   <motion.button
                     whileHover={{ scale: 1.05 }}
