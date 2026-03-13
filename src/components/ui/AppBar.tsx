@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import Link from 'next/link'
 import Image from 'next/image'
 import { useRouter, usePathname } from 'next/navigation'
-import { Home, Zap, Users, Briefcase, Mail, Brain, Menu, X } from 'lucide-react'
+import { Home, Zap, Users, Briefcase, Mail, Brain, Menu, X, GraduationCap } from 'lucide-react'
 import LoadingLink from './LoadingLink'
 import { useNavigation } from '@/providers/NavigationProvider'
 
@@ -13,6 +13,7 @@ const sections = [
   { id: 'home', label: 'Home', Icon: Home, href: '/' },
   { id: 'about', label: 'About Us', Icon: Users, href: '/aboutus' },
   { id: 'services', label: 'Services', Icon: Zap, href: '/services' },
+  { id: 'smart-school', label: 'Smart School', Icon: GraduationCap, href: '/smart-school' },
   { id: 'contact', label: 'Contact', Icon: Mail, href: '/contactus' },
 ]
 
@@ -34,6 +35,8 @@ export default function AppBar() {
       setActiveSection('services')
     } else if (pathname === '/contactus') {
       setActiveSection('contact')
+    } else if (pathname === '/smart-school') {
+      setActiveSection('smart-school')
     } else {
       setActiveSection('home')
     }

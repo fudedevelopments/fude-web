@@ -190,6 +190,7 @@ export default function Footer() {
                       { name: 'Home', href: '/' },
                       { name: 'About Us', href: '/aboutus' },
                       { name: 'Services', href: '/services' },
+                      { name: 'Smart School ERP', href: '/smart-school' },
                       { name: 'Contact Us', href: '/contactus' },
                     ].map((link, index) => (
                       <Link key={index} href={link.href}>
